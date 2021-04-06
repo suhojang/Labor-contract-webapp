@@ -1,0 +1,85 @@
+﻿<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<TITLE></TITLE>
+<link rel="stylesheet" href="../../tradesign2.css" type="text/css">
+<SCRIPT language=javascript src="../../TSToolkitConfig.js"></script>
+<SCRIPT language=javascript>
+<!--
+function makeOctetList(form)
+{
+	var nRet, dataType;
+	var octetList, data;
+	octetList = form.octetList.value;
+	data = form.data.value;
+	dataType = form.dataType.value;
+    
+	nRet = TSToolkit.MakeOctetList(data, dataType, octetList); 
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	form.octetList1.value = TSToolkit.OutData;
+	alert("Success!!");
+	return true;
+}
+
+-->
+</SCRIPT>
+</HEAD>
+<BODY>
+<P>
+<script language="javascript" src="../../TSToolkitObject.js"></script>	
+</P>
+
+<form name="myform">
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== 기 생성된 OctetList ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <textarea name="octetList" rows="6" cols="80"></textarea>
+    </td>
+  </tr>
+</table>
+<br>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== 입력할 데이타를 입력하세요 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      - 데이터 타입 : <br>
+      <input type="text" name="dataType" size="20" value=0> 0 : 스트링 입력, 1 : Base64 Decoding 입력<br>
+      - 데이터 : <br>
+      <textarea name="data" rows="6" cols="80"></textarea>
+    </td>
+  </tr>
+  <tr>
+    <td align="left">
+      <INPUT TYPE="button" name="button3" Value="OctetList 만들기" style="width:150" onClick="makeOctetList(myform);" >
+    </td>
+  </tr>
+</table>
+<br>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFF">== 생성된 OctetList ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <textarea name="octetList1" rows="6" cols="80"></textarea>
+    </td>
+  </tr>
+  <tr>
+    <td align="right">
+      <INPUT TYPE="reset" name="Clear" Value="화면 지우기" style="width:150">
+    </td>
+  </tr>
+</table>
+</form>
+</BODY>
+</HTML>

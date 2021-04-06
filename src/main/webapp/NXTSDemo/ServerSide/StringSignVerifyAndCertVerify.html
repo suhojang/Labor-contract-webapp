@@ -1,0 +1,81 @@
+﻿<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<TITLE></TITLE>
+<link rel="stylesheet" href="../tradesign2.css" type="text/css">
+<SCRIPT language="javascript">
+
+	function plainTextchk()
+	{
+		if( document.myform.plainText.value == "" ){
+			alert("서명할 원문 데이타를 입력하세요!");
+			document.myform.plainText.focus();
+			return false;
+		}
+		document.myform.mode.value ="sign";
+		document.myform.action="StringSignVerifyAndCertVerify.jsp";
+		document.myform.method="post";
+		document.myform.submit();
+	}
+	function signdatachk()
+	{
+		if( document.myform.plainText.value == "" || document.myform.signdata.value == ""){
+		
+			alert("서명할 원문 데이타를 입력후 서명 하신후 검증해 주세요");
+			return false;
+		}
+	}	
+</SCRIPT>
+</HEAD>
+<BODY>
+<form name="myform" action="StringSignVerifyAndCertVerify.jsp" method="post">
+
+<table border="2" width="670" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== 서명할 원문 데이타를 입력하세요 ==</font></td></tr>
+</table>
+<table border="2" width="670" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <textarea name="plainText" rows="6" cols="90"></textarea>
+    </td>
+</tr>
+  <tr>
+    <td align="right">
+      <INPUT TYPE="button" onClick="JavaScript:plainTextchk()" Value="서명하기" style="width:150">
+    </td>
+  </tr>
+</table>
+<table border="2" width="670" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== 서명된 데이타 ==</font></td></tr>
+</table>
+<table border="2" width="670" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <textarea name="signdata" rows="6" cols="90" readonly></textarea>
+    </td>
+</tr>
+  <tr>
+    <td align="right">
+      <INPUT TYPE="button" onClick="JavaScript:signdatachk()" Value="검증하기" style="width:150">
+    </td>
+  </tr>
+</table>
+<table border="2" width="670" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== 서명 검증 후 나온 원문 데이타 ==</font></td></tr>
+</table>
+<table border="2" width="670" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <textarea name="signdata" rows="6" cols="90"></textarea>
+    </td>
+</tr>
+  <tr>
+    <td align="right">
+      <INPUT TYPE="reset" Value="화면 지우기">
+    </td>
+  </tr>
+</table>
+<input type="hidden" name="mode">
+</form>
+</BODY>
+</HTML>

@@ -1,0 +1,82 @@
+﻿<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<TITLE></TITLE>
+<link rel="stylesheet" href="../../tradesign2.css" type="text/css">
+<SCRIPT language=javascript src="../../TSToolkitConfig.js"></script>
+<SCRIPT language=javascript>
+<!--
+function ExportCert(form)
+{
+	var nRet;
+	// 모든 Condition 설정.
+	nRet = TSToolkit.SetConfig("test", CA_LDAP_INFO, CTL_INFO, POLICIES+FIRST_INDI_CERT_POLICIES, 
+							INC_CERT_SIGN, INC_SIGN_TIME_SIGN, INC_CRL_SIGN, INC_CONTENT_SIGN,
+							USING_CRL_CHECK, USING_ARL_CHECK);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+	nRet = TSToolkit.ExportCert();
+	if (nRet > 0)            
+	{
+        alert(TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+    alert("Success!!");
+}
+
+function ImportCert(form)
+{
+	var nRet, certdn, storage;
+	// 모든 Condition 설정.
+	nRet = TSToolkit.SetConfig("test", CA_LDAP_INFO, CTL_INFO, POLICIES+FIRST_INDI_CERT_POLICIES, 
+							INC_CERT_SIGN, INC_SIGN_TIME_SIGN, INC_CRL_SIGN, INC_CONTENT_SIGN,
+							USING_CRL_CHECK, USING_ARL_CHECK);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+	nRet = TSToolkit.ImportCert();
+	if (nRet > 0)            
+	{
+		alert(TSToolkit.GetErrorMessage());
+		return false;
+	}
+    
+	alert("Success!!");
+}
+-->
+</SCRIPT>
+</HEAD>
+<BODY>
+<P>
+<script language="javascript" src="../../TSToolkitObject.js"></script>	
+</P>
+
+<form name="myform">
+
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== 인증서를 PKCS#12 형태로 내보내거나 가져옵니다. ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <INPUT TYPE="button" name="button1" Value="인증서 내보내기" style="width:150" onClick="ExportCert(myform);" >
+    </td>
+  </tr>
+  <tr>
+    <td align="left">
+      <INPUT TYPE="button" name="button1" Value="인증서 가져오기" style="width:150" onClick="ImportCert(myform);" >
+    </td>
+  </tr>
+</table>
+<br>
+</form>
+</BODY>
+</HTML>

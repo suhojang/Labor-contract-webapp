@@ -1,0 +1,195 @@
+body 
+{
+	scrollbar-face-color: #FFFFFF; scrollbar-shadow-color: #666666; 
+	scrollbar-highlight-color: #666666; scrollbar-3dlight-color: #FFFFFF; 
+	scrollbar-darkshadow-color: #FFFFFF; scrollbar-track-color: #FFFFFF; 
+	scrollbar-arrow-color: #666666;
+	
+	
+}
+td { font-size: 9pt; font-family:"굴림"; line-height:14pt; color:#000000;}
+textarea { font-size: 9pt; font-family:굴림; line-height:14pt; }
+
+.p{color:#0000FF; }
+a.p:active {font-family: "굴림"; font-size: 12px; color: #0033cc;text-decoration:none; }
+a.p:link    {font-family: "굴림"; font-size: 12px; color: #0033CC;text-decoration:underline; }
+a.p:visited{font-family: "굴림"; font-size: 12px; color: #0033CC;text-decoration:underline; }
+a.p:hover {font-family: "굴림"; font-size: 12px; color: #BD1C52; text-decoration:underline;}
+a.o:link {
+	font-size: 9pt;
+	color: #0000FF;
+	text-decoration: none;
+}
+a.o:visited {
+	font-size: 9pt;
+	color: #0000FF;
+	text-decoration: none;
+}
+a.o:hover {
+	font-size: 9pt;
+	color: #0000FF;
+	text-decoration: underline;
+}
+
+.altbox{ /* 꼬리말 박스 */
+    background-color:#fdfae9;
+	border-style:solid;
+	border-width:1px;
+	border-color:#c6bc87;
+	padding-left:4px;
+	padding-top:2px;
+	padding-bottom:1px;
+}
+
+.tabletit { margin-left:10px;margin-top:10px;margin-bottom:10px;} /*타이틀*/
+.tablebody { margin-left:27px;margin-top:10px;margin-bottom:10px;} /*내용*/
+
+
+
+.tabletit2 { margin-left:20px;margin-top:30px;margin-bottom:15px;}
+.tabletit3 { margin-left:7px;margin-top:0px;margin-bottom:7px;}
+.tabletit4 { margin-left:40px;margin-top:0px;margin-bottom:7px;}
+.tabletit5 { margin-left:5px;margin-top:5px;margin-bottom:0px;}
+.tablebody2 { margin-left:60px;margin-top:10px;margin-bottom:15px;}
+
+.tabbox{
+	background-color:#ffffff;
+	padding-left:7px;
+	padding-top:10px;
+	padding-bottom:7px;
+	border: 1px solid #86A9BE;
+}
+.tablebox{ 
+    background-color:#FEFDFC;
+	border-style:solid;
+	border-width:1px;
+	border-color:#99cccc;
+	
+
+	padding-bottom:2px;
+}
+	
+
+
+
+
+/* 간격 */
+.txtmargin2 { margin-bottom : 2px; }
+.txtmargin3 { margin-bottom : 3px; }
+.txtmargin5 { margin-bottom : 5px; }
+.txtmargin7 { margin-bottom : 7px; }
+.txtmargin10 { margin-bottom : 10px; }
+.txtmargin12 { margin-bottom : 12px; }
+.txtmargin15 { margin-bottom : 15px; }
+.txtmargin20 { margin-bottom : 20px; }
+.txtmargin50 { margin-bottom : 50px; }
+
+/* 강조색 */
+.redcon{ color:#B3002E; }
+.redconbold{ 
+	     color:#AF162E; 
+	     font-weight: bold;}
+.boxcon{ color:#006699; }
+
+.greencon{ color:#2D4F0F; }
+.excon{
+	color:#004A80;
+	font-weight: bold;
+}
+.bluecon{ color:#3E6CDF; }
+.ex{ color:#004A80; }
+.blcon{ color:blue; cursor:hand; text-decoration:underline; }
+.ball{ color:#009999; font-weight:bold; margin-bottom :7px; }
+.balltext{ color:#438174; font-weight:bold; margin-bottom :5px; }
+
+.blankbox{ 
+    background-color:#ffffff;
+	border-style:solid;
+	border-width:1px;
+	border-color:#97bae6;
+	padding-left:6px;
+	padding-top:7px;
+	padding-bottom:6px;
+}
+/*97bae6*/
+.blank{ 
+    background-color:#ffffff;
+	border-style:solid;
+	border-width:1px;
+	border-color:#9093D2;
+	padding-left:6px;
+	padding-top:7px;
+	padding-bottom:6px;
+}
+
+.blankbox2{ 
+    background-color:#ffffff;
+	border-style:solid;
+	border-width:1px;
+	border-color:#C9C9E2;
+	padding-left:6px;
+	padding-top:3px;
+	padding-bottom:6px;
+}
+
+.blankbox3{ 
+    background-color:#ffffff;
+	border-color:#C9C9E2;
+	padding-left:6px;
+	padding-top:3px;
+	padding-bottom:6px;
+}
+
+.exbox{ 
+    background-color:#ECF4FF;
+	border-style:solid;
+	border-width:1px;
+	border-color:#97bae6;
+	padding-left:6px;
+	padding-top:7px;
+	padding-bottom:6px;
+}
+
+.cellback{ background-color:#6699cc; }
+.celltop{
+
+ background-color:#9CCBDE;color:#006699;font-weight:bold;}
+.celltop2{ background-color:#9CCBDE;color:#006699; }
+.cellmid{background-color:#B5E3EF;color:#000000; }
+.cellmid2{background-color:#E5E6FF;color:#000000; }
+.celllight{ background-color:#ffffff;padding-left:7px;}
+.celllight2{ background-color:#ffffff;padding-left:3px;}
+.celllight3{ 
+	background-color:#ffffff;
+	padding-left:7px;
+	border-top:none;
+	
+}
+.blue {
+	font-family: "굴림";
+	font-size: 12px;
+	color: #00659C;
+	text-decoration: none;
+}
+.textfieldoutline {
+	border: 1px solid #999999;
+}
+.bold {
+	font-weight: bold;
+	color: #020064;
+	margin-bottom :5px;
+}
+.bold2 {
+	font-weight: bold;
+	color: #525186;
+	margin-bottom :3px;
+}
+
+.pageTitle {
+	font-size: 9pt;
+	font-family:"굴림"; 
+	line-height:14pt; 
+	font-weight: bold;
+	color: #020064;
+	margin-bottom :5px;
+}

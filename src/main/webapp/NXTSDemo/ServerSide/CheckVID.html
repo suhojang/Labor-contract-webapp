@@ -1,0 +1,90 @@
+﻿<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<TITLE></TITLE>
+<link rel="stylesheet" href="../tradesign2.css" type="text/css">
+<SCRIPT language=javascript src="../TSToolkitConfig.js"></script>
+<SCRIPT language=javascript>
+<!--
+function CheckIDN(form)
+{
+  var result;
+
+  result = AxCheckIDN(form.ssn.value);
+  if (result == false)
+  {
+    return false;
+  }
+}
+function AxCheckIDN(ssn)
+{
+	var nRet, certdn, storage;
+		
+	// 사용자가 자신의 인증서를 선택. 
+	// 인증서 검증할 인증서 꺼내오기 위해서만 사용.
+	var loginConf;
+	var myCertDirPath, myCert, myPriKeyInfo;
+	
+	nRet = TSToolkit.SetSelectCertConfig(CA_CERT_URL, CA_LDAP_INFO, POLICIES, STORAGE_TYPE); 	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+	}
+	
+	nRet = TSToolkit.SelectCertificate(certdn, storage, "", "", STORAGE_TYPE);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+	nRet = TSToolkit.VerifyVID(ssn);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	 
+	if (TSToolkit.OutData != "true")
+	{
+		alert("신원확인불일치");
+		return false;
+	}
+	
+	alert("Success!!");
+
+}
+
+-->
+</SCRIPT>
+</HEAD>
+<BODY>
+<P>
+<script language="javascript" src="../MultiToolkitObject.js"></script>	
+</P>
+
+<form name="myform" action="checkvid.jsp" method="POST" enctype="multipart/form-data">
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== 신원확인할 인증서의 신원확인 정보를 입력하세요 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="center">
+      <b>사업자(주민등록)번호 : <input type="text" name="ssn" size="13"> '-' 없이 입력하세요.
+    </td>
+  </tr>
+  <tr>
+	  <td align="left">
+		인증서 입력<input type="file" name="cert" >
+		<!--<INPUT TYPE="button" name="checkIDN" value="인증서 신원확인" style="width:150" onClick="CheckIDN(myform);"> -->
+    </td>
+  </tr>
+  <tr>
+	  <td align="right">
+<input type="submit" value="확인....">
+<!--<INPUT TYPE="reset" name="Clear" Value="화면 지우기" style="width:150">-->
+    </td>
+  </tr>
+</table>
+</form>
+</BODY>
+</HTML>

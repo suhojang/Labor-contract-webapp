@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<style type="text/css">
+A:link { text-decoration:none;}
+</style>
+<title>휴대폰인증서(보관)서비스 다운로드 페이지</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<SCRIPT LANGUAGE=javascript>
+	var ubikeyVersion="1,2,3,6";
+	var MacUBIKeyVer="1.0.0.1";
+	var LinuxUBIKeyVer="";
+
+	function getInternetExplorerVersion( )
+	{
+		var ver = -1;
+
+		if( navigator.appName == 'Microsoft Internet Explorer' )
+		{
+			var ua = navigator.userAgent;
+			var re = new RegExp("Trident\/([0-9]{1,}[\.0-9]{0,})");   
+			
+			if (re.exec(ua) != null) 
+			{        
+				ver = parseFloat(RegExp.$1);
+				ver += 4;
+			}
+			else
+			{
+				re = new RegExp( "MSIE ([0-9]{1,}[\.0-9]{0,})" );
+				if( re.exec( ua ) != null)
+				{
+					ver = parseFloat( RegExp.$1);
+				}
+			}
+		}
+		return ver;
+	}
+
+//png파일 투명 처리
+	function setPng24(obj) {
+		if( getInternetExplorerVersion() == 6.0 )
+		{
+		 obj.width=obj.height=1;
+		 obj.className=obj.className.replace(/\bpng24\b/i,'');
+		 obj.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='"+ obj.src +"',sizingMethod='image');"
+		 obj.src='';
+		}
+	 return '';
+	}
+	
+</SCRIPT>
+<style type="text/css">
+.png24 {
+   tmp:expression(setPng24(this));
+}
+html { overflow:hidden; }
+</style>
+</head>
+
+<body  leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" scroll="no">
+
+<!-- 멀티브라우저  수동 설치 페이지  -->
+<div align=center id="MultiBrowserIMG" style='Display:none'>
+<table border="0" width="100%" height="100%" cellspacing="0" cellpadding="0" align="center" class="png24">
+	<tr>
+		<td valign="middle">
+			<table border="0" width="450" height="400" align="center" background="img/mbg1.png">
+				<tr>
+					<td>
+				  <table border="0" width="400" height="350" align="center">
+                <tr>
+                   <!-- <td align="center" valign="bottom" height="245"><a href="./UBIKey.exe"><input type="button" value="Ubuntu_deb"><img src="img/btn1.png" border="0" class="png24">--></a></td> 
+                  <td align="center" valign="bottom" height="245"><a href="./UBIKey.exe"><img alt="다운로드" src="img/btn1.png" border="0" class="png24" ></a></td>     
+                </tr>
+                <tr>
+                	 <td valign="Bottom" align="right"><a href="javascript:window.close()"><img  alt="닫기" src="img/btn2.png" border="0" class="png24"></a></td>
+                </tr>
+        </table>
+        </td>
+	</tr>
+</table>
+</td>
+</tr>
+</table>
+</div>
+<div align=center style='Display:none'>
+<li> 휴대폰 인증서 서비스 설치 </li>
+<li> 서비스 이용을 위해 아래의 다운로드 버튼을 클릭하여 프로그램을 다운로드 하신 후 설치하여 주시기 바랍니다. </li>
+<li> 정상적으로 서비스실행이 되지 않을 경우, '웹브라우저'를 종료하신 후 재시작 하시기 바랍니다.	</li>
+<li> 휴대폰 인증서 서비스란? </li>
+<li> 인터넷에서 본인 확인 시 필요한 공인인증서를 휴대폰에 저장하여, 필요 시 저장된 인증서를 PC로 전송해 활용할 수 있는 서비스 </li>
+</div>
+
+</BODY>
+</html>
+
+<script>
+					MultiBrowserIMG.style.display = "";
+</script>

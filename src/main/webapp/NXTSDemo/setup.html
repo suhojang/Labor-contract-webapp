@@ -1,0 +1,35 @@
+﻿<html>
+<head>
+<title>:::: 인증서 관리 프로그램 설치화면 ::::::::</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+<link rel="stylesheet" href="tradesign2.css" type="text/css" >
+<script language="javascript" src="./js/BrowserDetect.js"></script>
+<script src="https://www.java.com/js/deployJava.js"></script>
+<script type="text/javascript">
+
+window.onload=function(){
+//		alert(BrowserDetect.browser);
+		//IE 일 경우 ActiveX 설치 페이지
+		if(BrowserDetect.browser == "MSIE" || BrowserDetect.browser == "Explorer" ){
+			if (navigator.platform.indexOf("Win32") == -1) {
+				alert("ActiveX 클라이언트는 IE 64bit에서는 동작하지 않습니다. IE 32bit를 실행 하시기 바랍니다.\n또한 Java(MultiBrowser)는  실행 가능하나 Java 64bit가 설치되어 있어야 합니다.");
+				location.href="help/IE_bit.html";
+				return false;	
+			}
+			location.href="setupAx.html";
+		}
+		//IE 외의 브라우저(크롬, 파이억폭스, 사파리 등) 일 경우. 
+		//Java 설치는  애플릿 실행(예: Client 모듈 테스트(Java) 페이지/서명 및 검증 페이지)시에 발생.
+		else{
+			location.href="setupOpenweb.html";
+		}
+}
+</script>
+</head>
+
+<body bgcolor="#B4B4B4">
+
+
+</body>
+
+</html>

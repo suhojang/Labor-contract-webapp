@@ -1,0 +1,44 @@
+﻿<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<link rel="stylesheet" href="../tradesign2.css" type="text/css">
+<SCRIPT language="javascript">
+
+	function ChkData()
+	{
+		if( document.myform.cert.value == "" ){
+			alert("정보 조회할 인증서를 입력하세요!");
+			document.myform.data.focus();
+			return false;
+		}
+		document.myform.submit();
+	}
+	
+</SCRIPT>
+</head>
+ <body>
+	
+<form name="myform" action="x509info.jsp" method="POST" enctype="multipart/form-data">
+
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97a9bb" bgcolor="#a7b9cc">
+	<tr>
+		<td align="center"><font color="#ffffff">== 인증서 정보 ==</font></td>
+	</tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#e0e0e0" bgcolor="#f0f0f0">
+	<tr>
+	<td align="left">
+		<input type="file" name="cert" size="40">
+	</td>
+	</tr>
+	<tr>
+		<td align="left">
+			<input type="button" onClick="JavaScript:ChkData()"  value="인증서 정보">
+		</td>
+	</tr>
+</table>
+</form>
+  
+  </body>
+  </html>
+  

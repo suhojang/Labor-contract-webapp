@@ -1,0 +1,165 @@
+﻿<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<TITLE></TITLE>
+<link rel="stylesheet" href="../../tradesign2.css" type="text/css">
+<SCRIPT language=javascript src="../../TSToolkitConfig.js"></script>
+<SCRIPT language=javascript>
+<!--
+function DVCSCheck(form)
+{
+	var nRet, isFile;
+	var dvcsUrl, data, dataType, serviceType, ocspVersion, hashAlgo;
+
+	// 서버 URL
+ 	dvcsUrl = form.dvcsUrl.value;
+	
+	// 데이터 및 형태 설정.
+	if (form.isFile.checked == true)
+	{
+		data = form.dataPath.value;
+		dataType = DATA_TYPE_FILE;
+	}
+	else
+	{
+		data = form.data.value;
+		dataType = DATA_TYPE_PEM;
+	}
+	
+	// 서비스 설정
+	if (form.serviceType.checked == true)
+	{
+		serviceType = "cpd";
+	}
+	else
+	{
+		serviceType = "ccpd";
+	}
+
+	// 모든 Condition 설정.
+	nRet = TSToolkit.SetConfig("test", CA_LDAP_INFO, CTL_INFO, POLICIES, 
+							INC_CERT_SIGN, INC_SIGN_TIME_SIGN, INC_CRL_SIGN, INC_CONTENT_SIGN,
+							USING_CRL_CHECK, USING_ARL_CHECK);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	// 인증서 로딩시 KM 인증서 검증 옵션 켜기
+	TSToolkit.SetEachConfig("LOAD_CERT_KM", "TRUE");
+	
+  //DVCS는 CMSSignedData로 무조건 캡슐화 되어야 한다.
+	nRet = TSToolkit.SelectCertificate(STORAGE_TYPE, 0, "");
+		if (nRet > 0)
+		{
+			alert(nRet + " : " + TSToolkit.GetErrorMessage());
+			return false;
+		}
+	// Hash  알고리즘 설정.
+	hashAlgo = HASH_ID_SHA1;
+	
+	// * 함수 설명
+	// serviceType : BSTR : 제공할 서비스 타입 "cpd" - 검증받을 데이터 자체를 넘긴다. 
+	// or "ccpd"-소유를검증받을 데이터를 내부에서 해쉬해서 보낸다.
+	// dvcsUrl : BSTR : DVCS 서버의 URL
+	// dataType : INT or SHORT : 
+	//			DATA_TYPE_PEM(0)  : 데이터(여기선 인증서를 데이터로 샘플로 씀)가 PEM 형태의 인증서임을 표시. 
+	//			DATA_TYPE_FILE(1) : 데이터(여기선 인증서를 데이터로 샘플로 씀)가 Binary(DER) 형태의 인증서 파일의 절대 경로임을 표시.
+	// data : BSTR : 데이터 소유를 검증할 할 데이터 또는 그 파일의 절대 경로
+	// hashAlgo : INT or SHOT : HASH 알고리즘.
+	//
+	// * 내부에서 해야할 일.
+	// - dataType 에 따라 데이터 파일을 읽던가, 데이터 처리를 한다. 
+	// - serviceType 에 따라 입력된 데이터로 cpd 또는 ccpd 형태로 요청메시지를 생성한다.
+	// - 응답메시지를 String 형태로 모든 값을 나열하여 하단의 TSToolkit.OutData 에서 꺼낼수 있도록 설정한다.
+	// - ResponseMessage 는 임의의 위치에 저장토록한다. (Debugging 용, 추후 삭제할 부분 표시)
+	//
+	nRet = TSToolkit.DVCSService(serviceType, dvcsUrl, dataType, data, hashAlgo);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	form.data1.value = TSToolkit.OutData;
+	
+	alert("Sucess!!!");
+}
+
+
+-->
+</SCRIPT>
+</HEAD>
+<BODY>
+<P>
+<script language="javascript" src="../../TSToolkitObject.js"></script>	
+</P>
+
+<form name="myform">
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== DVCS 서비스 URL을 입력하세요 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <input type="text" name="dvcsUrl" size="80" value="http://"></textarea>
+    </td>
+  </tr>
+</table>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== DVCS 서비스를 이용할 데이터를 입력하세요 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <textarea name="data" rows="6" cols="80"></textarea>
+    </td>
+  </tr>
+</table>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== DVCS 서비스를 이용할 데이터 파일의 절대경로를 입력하세요 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <input type="file" name="dataPath" size="65">
+    </td>
+  </tr>
+</table>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== DVCS 서비스 조건을 선택하세요 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <INPUT TYPE="checkbox" name="isFile" checked>파일 OR 데이타를 선택 여부(Check-파일, UnCheck-데이타)<br>
+      <INPUT TYPE="checkbox" name="serviceType" checked>cpd, ccpd 검증 서비스 선택(Check-cpd, UnCheck-ccpd 검증)<br>
+    </td>
+  </tr>
+  <tr>
+    <td align="left">
+      <INPUT TYPE="button" name="button1" Value="DVCS 서비스 실행하기" style="width:150" onClick="DVCSCheck(myform);" >
+    </td>
+  </tr>
+</table>
+<br>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFF">== DVCS서버 응답 내용 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <textarea name="data1" rows="6" cols="80"></textarea>
+    </td>
+  </tr>
+  <tr>
+    <td align="right">
+      <INPUT TYPE="reset" name="Clear" Value="화면 지우기" style="width:150">
+    </td>
+  </tr>
+</table>
+
+</form>
+</BODY>
+</HTML>

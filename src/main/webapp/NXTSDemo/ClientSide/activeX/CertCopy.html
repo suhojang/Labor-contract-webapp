@@ -1,0 +1,86 @@
+﻿<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<TITLE></TITLE>
+<link rel="stylesheet" href="../../tradesign2.css" type="text/css">
+<SCRIPT language=javascript src="../../TSToolkitConfig.js"></script>
+<SCRIPT language=javascript>
+<!--
+function CopyCert(form)
+{
+	var nRet, certdn, storage;
+	// 모든 Condition 설정.
+	nRet = TSToolkit.SetConfig("test", CA_LDAP_INFO, CTL_INFO, FIRST_COMP_CERT_POLICIES+FIRST_INDI_CERT_POLICIES, 
+							INC_CERT_SIGN, INC_SIGN_TIME_SIGN, INC_CRL_SIGN, INC_CONTENT_SIGN,
+							USING_CRL_CHECK, USING_ARL_CHECK);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+	nRet = TSToolkit.CopyCert(CA_TYPE_TRADESIGN, COMMON_CERT_POLICIES);
+	if (nRet > 0)            
+	{
+        alert(TSToolkit.GetErrorMessage());
+	}
+    else
+    {
+        alert("복사 성공");
+    }
+	return true;
+}
+
+function DeleteCert(form)
+{
+	var nRet, certdn, storage;
+	// 모든 Condition 설정.
+	nRet = TSToolkit.SetConfig("test", CA_LDAP_INFO, CTL_INFO, FIRST_COMP_CERT_POLICIES+FIRST_INDI_CERT_POLICIES, 
+							INC_CERT_SIGN, INC_SIGN_TIME_SIGN, INC_CRL_SIGN, INC_CONTENT_SIGN,
+							USING_CRL_CHECK, USING_ARL_CHECK);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+	nRet = TSToolkit.DeleteCert(CA_TYPE_TRADESIGN, "");
+	if (nRet > 0)            
+	{
+	         alert(TSToolkit.GetErrorMessage());
+	}
+    else
+    {
+        alert("삭제 성공");
+    }
+	return true;
+}
+-->
+</SCRIPT>
+</HEAD>
+<BODY>
+<P>
+<script language="javascript" src="../../TSToolkitObject.js"></script>	
+</P>
+
+<form name="myform">
+
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== 바이오 보안토큰에 인증서를 복사 합니다 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <INPUT TYPE="button" name="button1" Value="인증서 복사하기" style="width:150" onClick="CopyCert(myform);" >
+    </td>
+  </tr>
+  <tr>
+    <td align="left">
+      <INPUT TYPE="button" name="button1" Value="인증서 삭제하기" style="width:150" onClick="DeleteCert(myform);" >
+    </td>
+  </tr>
+</table>
+<br>
+</form>
+</BODY>
+</HTML>

@@ -1,0 +1,165 @@
+﻿<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<TITLE></TITLE>
+<link rel="stylesheet" href="../../tradesign2.css" type="text/css">
+<SCRIPT language=javascript src="../../TSToolkitConfig.js"></script>
+<SCRIPT language=javascript>
+<!--
+function GenSignature(form)
+{
+	var dataType, plainText, signMsg;
+	var nRet, certdn, storage;
+	
+	// 서명할 문자열 데이타 설정.
+	dataType = form.dataType.value;
+	plainText = form.plainText.value;
+	
+	// 모든 Condition 설정.
+	nRet = TSToolkit.SetConfig("test", CA_LDAP_INFO, CTL_INFO, POLICIES, 
+							INC_CERT_SIGN, INC_SIGN_TIME_SIGN, INC_CRL_SIGN, INC_CONTENT_SIGN,
+							USING_CRL_CHECK, USING_ARL_CHECK);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+	// 인증서 로딩시 KM 인증서 검증 옵션 켜기
+	TSToolkit.SetEachConfig("LOAD_CERT_KM", "TRUE");
+	
+	// 사용자가 자신의 인증서를 선택. 
+	nRet = TSToolkit.SelectCertificate(STORAGE_TYPE, 0, "");
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	// 서명용 인증서 꺼내기.
+	nRet = TSToolkit.GetCertificate(CERT_TYPE_SIGN, DATA_TYPE_PEM);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	form.signerCert.value = TSToolkit.OutData;
+
+	// 입력된 데이타 또는 파일 경로로 Signature 값 생성.
+	// dataType : 0 - plainText 가 서명할 문자열을 가짐.
+	// dataType : 1 - plainText 가 서명할 파일의 절대 경로를 가짐.
+	nRet = TSToolkit.GenSignature(dataType, plainText);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	form.signature.value = TSToolkit.OutData;
+	
+	alert("Sucess!!!");
+}
+
+// 서명검증.
+function VerifySignature(form)
+{
+	// 검증할 signedData 설정.
+	var dataType, plainText, signerCert, signature;
+	var nRet;
+	
+	// 검증에 필요한 데이타 설정.
+	dataType = form.dataType.value;
+	plainText = form.plainText.value;
+	signerCert = form.signerCert.value;
+	signature = form.signature.value;
+
+	// 입력된 데이타 또는 파일 경로로 Signature 값 확인.
+	// dataType : 0 - plainText 가 서명할 문자열을 가짐.
+	// dataType : 1 - plainText 가 서명할 파일의 절대 경로를 가짐.
+	nRet = TSToolkit.VerifySignature(dataType, plainText, signature, signerCert);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	alert("Sucess!!!");
+	return true;
+}
+
+-->
+</SCRIPT>
+</HEAD>
+<BODY>
+<P>
+<script language="javascript" src="../../TSToolkitObject.js"></script>	
+</P>
+
+<form name="myform">
+
+<table border="10" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="center"><font color="#FFFFFF">== 서명 생성 검증 기능 ==</font></td></tr>
+</table>
+<table border="10" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="left"><font color="#FFFFFF">서명할 데이터 또는 파일을 입력하고 서명에 사용할 인증서를 선택하면 서명값을 생성하고 검증합니다. </font></td></tr>
+</table>
+
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFF">== 데이타 타입 ( 0 : 데이타 , 1 : 파일경로 ) ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <input type="text" name="dataType" size="80" value="0"></textarea>
+    </td>
+  </tr>
+</table>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== 서명할 데이타 또는 파일의 경로를 입력하세요 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <textarea name="plainText" rows="6" cols="80"></textarea>
+    </td>
+  </tr>
+  <tr>
+    <td align="left">
+      <INPUT TYPE="button" name="button1" Value="서명값 생성하기" style="width:150" onClick="GenSignature(myform);" >
+    </td>
+  </tr>
+</table>
+<br>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFF">== 서명된 데이타 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <textarea name="signature" rows="6" cols="80"></textarea>
+    </td>
+  </tr>
+</table>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFF">== 서명에 사용한 인증서  ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <textarea name="signerCert" rows="6" cols="80"></textarea>
+    </td>
+  </tr>
+  <tr>
+    <td align="left">
+      <INPUT TYPE="button" name="button1" Value="서명값 검증하기" style="width:150" onClick="VerifySignature(myform);" >
+    </td>
+  </tr>
+  <tr>
+    <td align="right">
+      <INPUT TYPE="reset" name="Clear" Value="화면 지우기" style="width:150">
+    </td>
+  </tr>
+</table>
+
+</form>
+</BODY>
+</HTML>

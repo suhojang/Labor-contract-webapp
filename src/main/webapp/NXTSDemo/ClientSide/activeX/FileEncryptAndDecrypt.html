@@ -1,0 +1,179 @@
+﻿<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<TITLE></TITLE>
+<link rel="stylesheet" href="../../tradesign2.css" type="text/css">
+<SCRIPT language=javascript src="../../TSToolkitConfig.js"></script>
+<SCRIPT language=javascript>
+<!--
+function fileEncrypt(form)
+{
+	var nRet, secret;
+	// 서명할 파일및 서명후 저장할 파일경로 설정.
+	var dataFilePath, encryptFilePath, keyPwd;
+	dataFilePath = form.filePath.value;
+	encryptFilePath = form.encryptFilePath.value;
+	keyPwd = form.keyPwd.value;
+	
+	nRet = TSToolkit.SetEncryptionAlgoAndMode(SYMMETRIC_ID_3DES, SYMMETRIC_MODE_CBC); 
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	nRet = TSToolkit.GenerateSymmetricKey(keyPwd); 
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	var secretKey;
+	secretKey = TSToolkit.OutData;
+	alert("Secret Key : " + secretKey);
+	form.keyPwd.value = secretKey;
+	
+	nRet = TSToolkit.EncryptFile(dataFilePath, encryptFilePath, secretKey); 
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	alert("Success!!");
+	return true;
+}
+
+function fileDecrypt(form)
+{
+	var nRet, secret;
+	// 복호화할 파일 및 복호화후 저장할 파일경로 설정.
+	var encryptFilePath, decryptFilePath, keyPwd;
+	encryptFilePath = form.encryptFilePath1.value;
+	decryptFilePath = form.decryptFilePath.value;
+	keyPwd = form.keyPwd.value;
+	
+	nRet = TSToolkit.SetEncryptionAlgoAndMode(SYMMETRIC_ID_3DES, SYMMETRIC_MODE_CBC); 
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+	var secretKey;
+	secretKey = form.keyPwd.value;
+ 	
+	nRet = TSToolkit.DecryptFile(encryptFilePath, decryptFilePath, secretKey); 
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	alert("Success!!");
+	return true;
+}
+-->
+</SCRIPT>
+</HEAD>
+<BODY>
+<P>
+<script language="javascript" src="../../TSToolkitObject.js"></script>	
+</P>
+
+<form name="myform">
+
+
+<table border="10" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="center"><font color="#FFFFFF">== 파일 암호/복호==</font></td></tr>
+</table>
+<table border="10" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="left"><font color="#FFFFFF">Symmetric key 암호화 알고리즘은 암호화 하고자 하는 정보를 어떤 특정한 내용의 키로 암호화를 하면
+그 결과인 암호문을 복호화 하기 위해서는 다시 그 특정한 내용의 키를 사용해야 복호화를 되는 것을 말합니다.<br><br>
+대칭키와 초기벡터(IV)를 내부적으로 생성하여 사용합니다.
+일반적으로 문서의 내용을 암호화하는데에 사용됩니다. 
+모듈에서는 대칭키 암호화는 알고리즘과 Operation Mode에 의해 각 알고리즘을 수행합니다.<br><br>
+Operation Mode에는 ECB, CBC, CFB, OFB, CTR을 지원합니다.<br>  
+지원하는 알고리즘은 Block 암호화 방식의 DES, 3DES, SEED, BLOWFISH, AES, ARIA와 Stream 암호화 방식의 RC4를 지원합니다. </font></td></tr>
+</table>
+
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== 대칭키 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <input type="text" name="keyPwd" size="80">
+    </td>
+  </tr>
+</table>
+<br><br>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== Encrypt할 파일의 절대경로를 입력하세요 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <input type="file" name="filePath" size="65">
+    </td>
+  </tr>
+  <tr>
+    <td align="left">
+	&nbsp;
+	</td>
+  </tr>
+</table>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== Encrypt 파일을 저장할 파일의 절대경로를 입력하세요 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <input type="file" name="encryptFilePath" size="65">
+    </td>
+  </tr>
+  <tr>
+    <td align="left">
+      <INPUT TYPE="button" name="button1" Value="Encrypt File" style="width:150" onClick="fileEncrypt(myform);" > 
+    </td>
+  </tr>
+</table>
+<br>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== Encrypt된 파일의 절대경로를 입력하세요 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <input type="file" name="encryptFilePath1" size="65">
+    </td>
+  </tr>
+  <tr>
+    <td align="left">
+	&nbsp;
+	</td>
+  </tr>
+</table>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== Decrypt 한 후 추출한 원문을 저장할 파일의 절대경로를 입력하세요 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <input type="file" name="decryptFilePath" size="65">
+    </td>
+  </tr>
+  <tr>
+    <td align="left">
+      <INPUT TYPE="button" name="button2" Value="Decrypt File" style="width:150" onClick="fileDecrypt(myform);" >
+    </td>
+  </tr>
+  <tr>
+    <td align="right">
+      <INPUT TYPE="reset" name="Clear" Value="화면 지우기" style="width:150">
+    </td>
+  </tr>
+</table>
+</form>
+</BODY>
+</HTML>

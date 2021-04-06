@@ -1,0 +1,625 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="kcplaa">
+	<typeAlias  alias="sqlMapNoCamel" type="kcert.framework.util.EgovMapNoCamel"/>
+	<typeAlias  alias="sqlMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	
+	<parameterMap id="SequenceParams" class="map">
+		<parameter property="CD" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN"/>
+		<parameter property="SQ" jdbcType="NUMERIC" javaType="java.lang.Long" mode="OUT"/>
+	</parameterMap>
+	
+	<resultMap id="clientVO" class="kcert.web.vo.ClientVO">
+		<result property="NO" column="NO" columnIndex="1"/>
+		<result property="ID" column="ID" columnIndex="2"/>
+		<result property="NM" column="NM" columnIndex="3"/>
+		<result property="HP" column="HP" columnIndex="4"/>
+		<result property="EML" column="EML" columnIndex="5"/>
+		<result property="BSNM" column="BSNM" columnIndex="6"/>
+		<result property="ADDR" column="ADDR" columnIndex="7"/>
+		<result property="TEL" column="TEL" columnIndex="8"/>
+		<result property="RDT" column="RDT" columnIndex="9"/>
+		<result property="UDT" column="UDT" columnIndex="10"/>
+	</resultMap>
+	
+	<!-- 시퀀스 채번 -->
+	<procedure id="nextval" parameterMap="SequenceParams">
+		{CALL SP_NEXTVAL(?,?)}
+	</procedure>
+	
+	<!-- 시퀀스 번호 확인 -->
+	<procedure id="currentval" parameterMap="SequenceParams">
+		{CALL SP_CURRVAL(?,?)}
+	</procedure>
+	
+	<!-- 아이디 중복체크 -->
+	<select id="SEL_CLA_CHECK" parameterClass="java.lang.String" resultClass="java.lang.String">
+		SELECT
+			CASE WHEN COUNT(CLINF_NO) > 0 THEN 
+		    'Y'
+		    ELSE 
+		    'N' 
+		    END AS CHECKED
+		FROM TBICM_CLINF
+		WHERE CLINF_ID = #ID#
+	</select>
+	
+	<!-- 사용자정보 등록 -->
+    <update id="INS_CLA_INFO"  parameterClass="kcert.web.vo.ClientVO">
+		INSERT INTO TBICM_CLINF(
+				CLINF_NO
+				,CLINF_ID
+				,CLINF_PWD
+				,CLINF_NM
+				,CLINF_HP
+				,CLINF_EML
+				,CLINF_BSNM
+				,CLINF_ADDR
+				,CLINF_TEL
+				,CLINF_RDT
+				,CLINF_UDT
+			)VALUES(
+				 #NO#
+				,#ID#
+				,#PWD#
+				,#NM#
+				,#HP#
+				,#EML#
+				,#BSNM#
+				,#ADDR#
+				,#TEL#
+				,NOW()
+				,NOW()
+			)
+    </update>
+    
+    <!-- 로그인 -->
+	<select id="SEL_CLA_LOGIN" parameterClass="kcert.web.vo.ClientVO" resultMap="clientVO">
+		SELECT 
+			CLINF_NO	AS NO
+			,CLINF_ID	AS ID
+			,CLINF_NM	AS NM
+			,CLINF_HP	AS HP
+			,CLINF_EML	AS EML
+			,CLINF_BSNM	AS BSNM
+			,CLINF_ADDR	AS ADDR
+			,CLINF_TEL	AS TEL
+			,CLINF_RDT	AS RDT
+			,CLINF_UDT	AS UDT
+		FROM TBICM_CLINF
+		WHERE 1=1
+			AND CLINF_ID	= #ID#
+			AND CLINF_PWD	= #PWD#
+	</select>
+	
+	<!-- 근로계약정보 등록 -->
+    <update id="INS_EDC_DATA"  parameterClass="java.util.Map">
+		INSERT INTO TBICM_CNTOL(
+				CNTOL_NO
+				,CLINF_NO
+				,CNTOL_NM
+				,CNTOL_HP
+				,CNTOL_EML
+				,CNTOL_COLSD
+				,CNTOL_COLED
+				,CNTOL_POS
+				,CNTOL_COB
+				,CNTOL_LABST
+				,CNTOL_LABET
+				,CNTOL_RSTST
+				,CNTOL_RSTET
+				,CNTOL_WKD
+				,CNTOL_HLD
+				,CNTOL_MPAY
+				,CNTOL_BNSYN
+				,CNTOL_BNSAMT
+				,CNTOL_OPYN
+				,CNTOL_OPAMT1
+				,CNTOL_OPAMT2
+				,CNTOL_OPAMT3
+				,CNTOL_OPAMT4
+				,CNTOL_DPSDAT
+				,CNTOL_MTD
+				,CNTOL_CNTDAT
+				,CNTOL_STS
+				,CNTOL_RDT
+				,CNTOL_UDT
+			)VALUES(
+				#SEQ#
+				,#NO#
+				,#WKNM#
+				,#HP#
+				,#EML#
+				,#COLSD#
+				,#COLED#
+				,#POS#
+				,#COB#
+				,#LABST#
+				,#LABET#
+				,#RSTST#
+				,#RSTET#
+				,#WKD#
+				,#HLD#
+				,#MPAY#
+				,#BNSYN#
+				,#BNSAMT#
+				,#OPYN#
+				,#OPAMT1#
+				,#OPAMT2#
+				,#OPAMT3#
+				,#OPAMT4#
+				,#DPSDAT#
+				,#MTHD#
+				,#CNTDAT#
+				,'01'
+				,NOW()
+				,NOW()
+			)
+    </update>
+    
+    <!-- 수기서명정보 등록 -->
+    <update id="INS_EDC_SIGNDATA"  parameterClass="java.util.Map">
+		INSERT INTO TBICM_SGNINF(
+				SGNINF_NO
+				,CNTOL_NO
+				,SGNINF_USRKN
+				,SGNINF_PTH
+				,SGNINF_RDT
+				,SGNINF_UDT
+			)VALUES(
+				#SGNO#
+				,#CNNO#
+				,#USRKN#
+				,#PTH#
+				,NOW()
+				,NOW()
+			)
+    </update>
+    
+    <!-- 전자서명정보 등록 -->
+    <update id="CLA_EDC_CRTSIGN"  parameterClass="java.util.Map">
+		INSERT INTO TBICM_CRTINF(
+				CRTINF_NO
+				,CNTOL_NO
+				,CRTINF_USRKN
+				,CRTINF_PTH
+				,CRTINF_RDT
+				,CRTINF_UDT
+			)VALUES(
+				#CRNO#
+				,#CNNO#
+				,#USRKN#
+				,#PTH#
+				,NOW()
+				,NOW()
+			)
+    </update>
+    
+    <!-- 전자근로계약 상태 변경 -->
+    <update id="CLA_EDC_UPTSTS"  parameterClass="java.util.Map">
+		UPDATE TBICM_CNTOL
+			SET 
+				CNTOL_STS = #STS#
+				,CNTOL_UDT		= NOW()
+		WHERE 1=1
+			AND CNTOL_NO = #CNNO#
+    </update>
+    
+    <!-- 좌표정보 불러오기 -->
+	<select id="SEL_EDC_XMLINF" parameterClass="java.lang.String" resultClass="java.lang.String">
+		SELECT
+			XMLINF_XML
+		FROM TBICM_XMLINF
+		WHERE XMLINF_NO = #NO#
+	</select>
+	
+	<!-- 근로계약정보 불러오기 -->
+	<select id="SEL_EDC_DATA" parameterClass="java.util.Map" resultClass="sqlMap">
+		SELECT
+			A.CNTOL_NO		AS CNNO
+			,'A01'			AS ICCD
+			,B.CLINF_BSNM	AS BSNM
+			,B.CLINF_ADDR	AS BSADDR
+			,B.CLINF_NM		AS BSCEO
+			,B.CLINF_TEL	AS BSTEL
+			,A.CLINF_NO		AS CLNO
+			,A.CNTOL_NM		AS WKNM
+			,A.CNTOL_HP 	AS WKHP
+			,A.CNTOL_EML	AS WKEML
+			,A.CNTOL_WKADDR	AS WKADDR
+			,A.CNTOL_COLSD	AS COLSD
+			,A.CNTOL_COLED	AS COLED
+			,A.CNTOL_POS	AS POS
+			,A.CNTOL_COB	AS COB
+			,A.CNTOL_LABST	AS LABST
+			,A.CNTOL_LABET	AS LABET
+			,A.CNTOL_RSTST	AS RSTST
+			,A.CNTOL_RSTET	AS RSTET
+			,A.CNTOL_WKD	AS WKD
+			,A.CNTOL_HLD	AS HLD
+			,A.CNTOL_MPAY	AS MPAY
+			,A.CNTOL_BNSYN	AS BNSYN
+			,A.CNTOL_BNSAMT	AS BNSAMT
+			,A.CNTOL_OPYN	AS OPYN
+			,A.CNTOL_OPAMT1	AS OPAMT1
+			,A.CNTOL_OPAMT2	AS OPAMT2
+			,A.CNTOL_OPAMT3	AS OPAMT3
+			,A.CNTOL_OPAMT4 AS OPAMT4
+			,A.CNTOL_DPSDAT AS DPSDAT
+			,A.CNTOL_MTD	AS MTHD
+			,A.CNTOL_CNTDAT	AS CNTDAT
+			,A.CNTOL_STS	AS STS
+			,A.CNTOL_RCNTNT	AS RCNTNT
+			,A.CNTOL_RDT	AS RDT
+			,A.CNTOL_UDT	AS UDT
+		FROM
+		TBICM_CNTOL A
+		LEFT OUTER JOIN TBICM_CLINF B
+			ON A.CLINF_NO = B.CLINF_NO
+		WHERE 1=1
+		AND A.CNTOL_NO = #CNNO#
+	</select>
+	
+	<select id="SEL_EDC_CRTDATA01" parameterClass="java.util.Map" resultClass="sqlMap">
+		SELECT
+			A.CNTOL_NO		AS CNNO
+			,A.CLINF_NO		AS CLNO
+			,A.CNTOL_NM		AS CLNM
+			,A.CNTOL_HP		AS CLHP
+			,A.CNTOL_EML	AS CLEML
+			,A.CNTOL_COLSD	AS COLSD
+			,A.CNTOL_COLED	AS COLED
+			,A.CNTOL_MPAY	AS MPAY
+			,A.CNTOL_STS	AS STS
+			,B.CDDTL_NM		AS STSNM
+			,A.CNTOL_RCNTNT	AS RCNTNT
+			,(SELECT CLINF_BSNM FROM TBICM_CLINF WHERE CLINF_NO=A.CLINF_NO) AS BSNM
+		FROM TBICM_CNTOL A
+		LEFT OUTER JOIN TBICM_CDDTL B
+			ON B.CDDTL_CCD	= '0003'
+			AND A.CNTOL_STS	= B.CDDTL_DCD
+		WHERE 1=1
+		AND A.CLINF_NO = #CLNO#
+		AND A.CNTOL_STS = '01'
+		ORDER BY A.CNTOL_UDT DESC
+	</select>
+	
+	<select id="SEL_EDC_CRTDATA02" parameterClass="java.util.Map" resultClass="sqlMap">
+		SELECT
+			A.CNTOL_NO		AS CNNO
+			,A.CLINF_NO		AS CLNO
+			,A.CNTOL_NM		AS CLNM
+			,A.CNTOL_HP		AS CLHP
+			,A.CNTOL_EML	AS CLEML
+			,A.CNTOL_COLSD	AS COLSD
+			,A.CNTOL_COLED	AS COLED
+			,A.CNTOL_MPAY	AS MPAY
+			,A.CNTOL_STS	AS STS
+			,B.CDDTL_NM		AS STSNM
+			,A.CNTOL_RCNTNT	AS RCNTNT
+			,(SELECT CLINF_BSNM FROM TBICM_CLINF WHERE CLINF_NO=A.CLINF_NO) AS BSNM
+		FROM TBICM_CNTOL A
+		LEFT OUTER JOIN TBICM_CDDTL B
+			ON B.CDDTL_CCD	= '0003'
+			AND A.CNTOL_STS	= B.CDDTL_DCD
+		WHERE 1=1
+		AND A.CLINF_NO = #CLNO#
+		AND A.CNTOL_STS = '02'
+		ORDER BY A.CNTOL_UDT DESC
+	</select>
+	
+	<select id="SEL_EDC_CRTDATA03" parameterClass="java.util.Map" resultClass="sqlMap">
+		SELECT
+			A.CNTOL_NO		AS CNNO
+			,A.CLINF_NO		AS CLNO
+			,A.CNTOL_NM		AS CLNM
+			,A.CNTOL_HP		AS CLHP
+			,A.CNTOL_EML	AS CLEML
+			,A.CNTOL_COLSD	AS COLSD
+			,A.CNTOL_COLED	AS COLED
+			,A.CNTOL_MPAY	AS MPAY
+			,A.CNTOL_STS	AS STS
+			,B.CDDTL_NM		AS STSNM
+			,A.CNTOL_RCNTNT	AS RCNTNT
+			,(SELECT CLINF_BSNM FROM TBICM_CLINF WHERE CLINF_NO=A.CLINF_NO) AS BSNM
+		FROM TBICM_CNTOL A
+		LEFT OUTER JOIN TBICM_CDDTL B
+			ON B.CDDTL_CCD	= '0003'
+			AND A.CNTOL_STS	= B.CDDTL_DCD
+		WHERE 1=1
+		AND A.CLINF_NO = #CLNO#
+		AND A.CNTOL_STS = '03'
+		ORDER BY A.CNTOL_UDT DESC
+	</select>
+	
+	<select id="SEL_EDC_CRTDATA04" parameterClass="java.util.Map" resultClass="sqlMap">
+		SELECT
+			A.CNTOL_NO		AS CNNO
+			,A.CLINF_NO		AS CLNO
+			,A.CNTOL_NM		AS CLNM
+			,A.CNTOL_HP		AS CLHP
+			,A.CNTOL_EML	AS CLEML
+			,A.CNTOL_COLSD	AS COLSD
+			,A.CNTOL_COLED	AS COLED
+			,A.CNTOL_MPAY	AS MPAY
+			,A.CNTOL_STS	AS STS
+			,B.CDDTL_NM		AS STSNM
+			,A.CNTOL_RCNTNT	AS RCNTNT
+			,(SELECT CLINF_BSNM FROM TBICM_CLINF WHERE CLINF_NO=A.CLINF_NO) AS BSNM
+		FROM TBICM_CNTOL A
+		LEFT OUTER JOIN TBICM_CDDTL B
+			ON B.CDDTL_CCD	= '0003'
+			AND A.CNTOL_STS	= B.CDDTL_DCD
+		WHERE 1=1
+		AND A.CLINF_NO = #CLNO#
+		AND A.CNTOL_STS = '05'
+		ORDER BY A.CNTOL_UDT DESC
+	</select>
+	
+	<select id="SEL_EDC_CRTDATA05" parameterClass="java.util.Map" resultClass="sqlMap">
+		SELECT
+			A.CNTOL_NO		AS CNNO
+			,A.CLINF_NO		AS CLNO
+			,A.CNTOL_NM		AS CLNM
+			,A.CNTOL_HP		AS CLHP
+			,A.CNTOL_EML	AS CLEML
+			,A.CNTOL_COLSD	AS COLSD
+			,A.CNTOL_COLED	AS COLED
+			,A.CNTOL_MPAY	AS MPAY
+			,A.CNTOL_STS	AS STS
+			,B.CDDTL_NM		AS STSNM
+			,A.CNTOL_RCNTNT	AS RCNTNT
+			,(SELECT CLINF_BSNM FROM TBICM_CLINF WHERE CLINF_NO=A.CLINF_NO) AS BSNM
+		FROM TBICM_CNTOL A
+		LEFT OUTER JOIN TBICM_CDDTL B
+			ON B.CDDTL_CCD	= '0003'
+			AND A.CNTOL_STS	= B.CDDTL_DCD
+		WHERE 1=1
+		AND A.CLINF_NO = #CLNO#
+		AND A.CNTOL_STS = '99'
+		AND A.CNTOL_COLED >= REPLACE(DATE_FORMAT(NOW(), '%Y%m%d'),'-','')
+		ORDER BY A.CNTOL_UDT DESC
+	</select>
+	
+	<select id="SEL_EDC_CRTDATA06" parameterClass="java.util.Map" resultClass="sqlMap">
+		SELECT
+			A.CNTOL_NO		AS CNNO
+			,A.CLINF_NO		AS CLNO
+			,A.CNTOL_NM		AS CLNM
+			,A.CNTOL_HP		AS CLHP
+			,A.CNTOL_EML	AS CLEML
+			,A.CNTOL_COLSD	AS COLSD
+			,A.CNTOL_COLED	AS COLED
+			,A.CNTOL_MPAY	AS MPAY
+			,A.CNTOL_STS	AS STS
+			,B.CDDTL_NM		AS STSNM
+			,A.CNTOL_RCNTNT	AS RCNTNT
+			,(SELECT CLINF_BSNM FROM TBICM_CLINF WHERE CLINF_NO=A.CLINF_NO) AS BSNM
+		FROM TBICM_CNTOL A
+		LEFT OUTER JOIN TBICM_CDDTL B
+			ON B.CDDTL_CCD	= '0003'
+			AND A.CNTOL_STS	= B.CDDTL_DCD
+		WHERE 1=1
+		AND A.CLINF_NO = #CLNO#
+		AND A.CNTOL_STS = '99'
+		AND A.CNTOL_COLED BETWEEN REPLACE(DATE_FORMAT(NOW(), '%Y%m%d'),'-','') AND REPLACE(DATE_FORMAT(DATE_ADD(NOW(), INTERVAL+30 DAY),'%Y%m%d'),'-','') 
+		ORDER BY A.CNTOL_UDT DESC
+	</select>
+	
+	
+	<select id="SEL_EDC_CRTDATA07" parameterClass="java.util.Map" resultClass="sqlMap">
+		SELECT
+			A.CNTOL_NO		AS CNNO
+			,A.CLINF_NO		AS CLNO
+			,A.CNTOL_NM		AS CLNM
+			,A.CNTOL_HP		AS CLHP
+			,A.CNTOL_EML	AS CLEML
+			,A.CNTOL_COLSD	AS COLSD
+			,A.CNTOL_COLED	AS COLED
+			,A.CNTOL_MPAY	AS MPAY
+			,A.CNTOL_STS	AS STS
+			,B.CDDTL_NM		AS STSNM
+			,A.CNTOL_RCNTNT	AS RCNTNT
+			,(SELECT CLINF_BSNM FROM TBICM_CLINF WHERE CLINF_NO=A.CLINF_NO) AS BSNM
+		FROM TBICM_CNTOL A
+		LEFT OUTER JOIN TBICM_CDDTL B
+			ON B.CDDTL_CCD	= '0003'
+			AND A.CNTOL_STS	= B.CDDTL_DCD
+		WHERE 1=1
+		AND A.CLINF_NO = #CLNO#
+		AND A.CNTOL_STS = '99'
+		AND A.CNTOL_COLED <![CDATA[<]]> REPLACE(DATE_FORMAT(NOW(), '%Y%m%d'),'-','')
+		ORDER BY A.CNTOL_UDT DESC
+	</select>
+	
+	<select id="CLA_EDC_UPT" parameterClass="java.util.Map" resultClass="sqlMap">
+		SELECT
+			A.CNTOL_NO		AS CNNO
+			,A.CLINF_NO		AS CLNO
+			,A.CNTOL_NM		AS CLNM
+			,A.CNTOL_HP		AS CLHP
+			,A.CNTOL_EML	AS CLEML
+			,A.CNTOL_COLSD	AS COLSD
+			,A.CNTOL_COLED	AS COLED
+			,A.CNTOL_POS	AS POS
+			,A.CNTOL_COB	AS COB
+			,A.CNTOL_LABST	AS LABST
+			,A.CNTOL_LABET	AS LABET
+			,A.CNTOL_RSTST	AS RSTST
+			,A.CNTOL_RSTET	AS RSTET
+			,A.CNTOL_WKD	AS WKD
+			,A.CNTOL_HLD	AS HLD
+			,A.CNTOL_MPAY	AS MPAY
+			,A.CNTOL_BNSYN	AS BNSYN
+			,A.CNTOL_BNSAMT	AS BNSAMT
+			,A.CNTOL_OPYN	AS OPYN
+			,A.CNTOL_OPAMT1	AS OPAMT1
+			,A.CNTOL_OPAMT2	AS OPAMT2
+			,A.CNTOL_OPAMT3	AS OPAMT3
+			,A.CNTOL_OPAMT4	AS OPAMT4
+			,A.CNTOL_DPSDAT	AS DPSDAT
+			,A.CNTOL_MTD	AS MTD
+			,A.CNTOL_CNTDAT	AS CNTDAT
+			,A.CNTOL_STS	AS STS
+			,A.CNTOL_RCNTNT	AS RCNTNT
+			,(SELECT SGNINF_NO FROM TBICM_SGNINF WHERE CNTOL_NO = A.CNTOL_NO)	AS SGNO
+			,(SELECT CRTINF_NO FROM TBICM_CRTINF WHERE CNTOL_NO = A.CNTOL_NO)	AS CRNO
+		FROM TBICM_CNTOL A
+		WHERE 1=1
+		AND A.CNTOL_NO = #CNNO#
+	</select>
+	
+	<!-- 전자근로계약 정보 수정 -->
+    <update id="UPT_EDC_DATA"  parameterClass="java.util.Map">
+		UPDATE TBICM_CNTOL
+			SET 
+				CNTOL_NM		= #WKNM#
+				,CNTOL_HP		= #HP#
+				,CNTOL_EML		= #EML#
+				,CNTOL_COLSD	= #COLSD#
+				,CNTOL_COLED	= #COLED#
+				,CNTOL_POS		= #POS#
+				,CNTOL_COB		= #COB#
+				,CNTOL_LABST	= #LABST#
+				,CNTOL_LABET	= #LABET#
+				,CNTOL_RSTST	= #RSTST#
+				,CNTOL_RSTET	= #RSTET#
+				,CNTOL_WKD		= #WKD#
+				,CNTOL_HLD		= #HLD#
+				,CNTOL_MPAY		= #MPAY#
+				,CNTOL_BNSYN	= #BNSYN#
+				,CNTOL_BNSAMT	= #BNSAMT#
+				,CNTOL_OPYN		= #OPYN#
+				,CNTOL_OPAMT1	= #OPAMT1#
+				,CNTOL_OPAMT2	= #OPAMT2#
+				,CNTOL_OPAMT3	= #OPAMT3#
+				,CNTOL_OPAMT4	= #OPAMT4#
+				,CNTOL_DPSDAT	= #DPSDAT#
+				,CNTOL_MTD		= #MTD#
+				,CNTOL_CNTDAT	= #CNTDAT#
+				,CNTOL_STS		= '01'
+				,CNTOL_UDT		= NOW()
+		WHERE 1=1
+			AND CNTOL_NO = #SEQ#
+    </update>
+    
+	<!-- 수기서명 정보 변경 -->
+    <update id="UPT_EDC_SIGNDATA"  parameterClass="java.util.Map">
+		UPDATE TBICM_SGNINF
+			SET 
+				SGNINF_USRKN	= #USRKN#
+				,SGNINF_PTH		= #PTH#
+				,SGNINF_UDT		= NOW()
+		WHERE 1=1
+			AND SGNINF_NO = #SGNO#
+    </update>
+    
+    <!-- 전자서명 정보 변경 -->
+    <update id="UPT_EDC_CRTSIGN"  parameterClass="java.util.Map">
+		UPDATE TBICM_CRTINF
+			SET 
+				CRTINF_USRKN	= #USRKN#
+				,CRTINF_PTH		= #PTH#
+				,CRTINF_UDT		= NOW()
+		WHERE 1=1
+			AND CRTINF_NO = #CRNO#
+    </update>
+    
+    <delete id="CLA_EDC_CNTOLDEL" parameterClass="java.util.Map">
+    	DELETE FROM TBICM_CNTOL WHERE CNTOL_NO = #CNNO#
+    </delete>
+    <delete id="CLA_EDC_CRTINFDEL" parameterClass="java.util.Map">
+    	DELETE FROM TBICM_CRTINF WHERE CNTOL_NO = #CNNO#
+    </delete>
+    <delete id="CLA_EDC_SGNINFLDEL" parameterClass="java.util.Map">
+    	DELETE FROM TBICM_SGNINF WHERE CNTOL_NO = #CNNO#
+    </delete>
+    <delete id="CLA_EDC_TSAINFLDEL" parameterClass="java.util.Map">
+    	DELETE FROM TBICM_TSAINF WHERE CNTOL_NO = #CNNO#
+    </delete>
+    
+    <select id="CLA_CNT_SEL" parameterClass="java.util.Map" resultClass="sqlMap">
+		SELECT
+			A.CNTOL_NO		AS CNNO
+			,A.CLINF_NO		AS CLNO
+			,A.CNTOL_NM		AS CLNM
+			,A.CNTOL_HP		AS CLHP
+			,A.CNTOL_EML	AS CLEML
+			,A.CNTOL_COLSD	AS COLSD
+			,A.CNTOL_COLED	AS COLED
+			,A.CNTOL_POS	AS POS
+			,A.CNTOL_COB	AS COB
+			,A.CNTOL_LABST	AS LABST
+			,A.CNTOL_LABET	AS LABET
+			,A.CNTOL_RSTST	AS RSTST
+			,A.CNTOL_RSTET	AS RSTET
+			,A.CNTOL_WKD	AS WKD
+			,A.CNTOL_HLD	AS HLD
+			,A.CNTOL_MPAY	AS MPAY
+			,A.CNTOL_BNSYN	AS BNSYN
+			,A.CNTOL_BNSAMT	AS BNSAMT
+			,A.CNTOL_OPYN	AS OPYN
+			,A.CNTOL_OPAMT1	AS OPAMT1
+			,A.CNTOL_OPAMT2	AS OPAMT2
+			,A.CNTOL_OPAMT3	AS OPAMT3
+			,A.CNTOL_OPAMT4	AS OPAMT4
+			,A.CNTOL_DPSDAT	AS DPSDAT
+			,A.CNTOL_MTD	AS MTD
+			,A.CNTOL_CNTDAT	AS CNTDAT
+			,A.CNTOL_STS	AS STS
+			,A.CNTOL_RCNTNT	AS RCNTNT
+			,B.CLINF_EML	AS CLEML2
+			,B.CLINF_BSNM	AS BSNM
+		FROM TBICM_CNTOL A
+		LEFT OUTER JOIN TBICM_CLINF B
+			ON A.CLINF_NO	= B.CLINF_NO
+		WHERE 1=1
+		AND A.CNTOL_NO = #CNNO#
+	</select>
+	
+	<!-- 전자근로계약 근로자주소 변경 -->
+    <update id="CLA_EDC_UPTADDR"  parameterClass="java.util.Map">
+		UPDATE TBICM_CNTOL
+			SET 
+				CNTOL_WKADDR = #WKADDR#
+				,CNTOL_UDT	 = NOW()
+		WHERE 1=1
+			AND CNTOL_NO = #CNNO#
+    </update>
+	
+    <!-- 전자서명 정보 변경(반려) -->
+    <update id="UPT_CLA_DATA"  parameterClass="java.util.Map">
+		UPDATE TBICM_CNTOL
+			SET 
+				CNTOL_STS		= #STS#
+				,CNTOL_RCNTNT	= #RCNTNT#
+				,CNTOL_UDT		= NOW()
+		WHERE 1=1
+			AND CNTOL_NO = #CNNO#
+    </update>
+    
+    <!-- TSA정보 등록 -->
+    <update id="INS_CNT_TSA"  parameterClass="java.util.Map">
+		INSERT INTO TBICM_TSAINF(
+				TSAINF_NO
+				,CNTOL_NO
+				,TSAINF_RLT
+				,TSAINF_DN
+				,TSAINF_ISUTM
+				,TSAINF_ALGM
+				,TSAINF_HSHVL
+				,TSAINF_RDT
+				,TSAINF_UDT
+			)VALUES(
+				#TSNO#
+				,#CNNO#
+				,#RLT#
+				,#DN#
+				,#ISUTM#
+				,#ALGM#
+				,#HSHVL#
+				,NOW()
+				,NOW()
+			)
+    </update>
+</sqlMap>

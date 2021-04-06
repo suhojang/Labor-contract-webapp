@@ -1,0 +1,404 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{FA597FEE-19AE-45BD-9636-08F16570FE9C}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>NetToolkitDemo</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>NetToolkitDemo</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Web">
+      <Name>System.Web</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <Reference Include="TSAPI_NET_VS80, Version=3.1.0.0, Culture=neutral, PublicKeyToken=8782346352ecbc7a, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Windows\SysWOW64\TSAPI_NET_VS80.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CSSide\all\DemoAddsign.aspx.cs">
+      <DependentUpon>DemoAddsign.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CSSide\all\DemoAddsign.aspx.designer.cs">
+      <DependentUpon>DemoAddsign.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CSSide\all\DemoEncryptAndDecrypt.aspx.cs">
+      <DependentUpon>DemoEncryptAndDecrypt.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CSSide\all\DemoEncryptAndDecrypt.aspx.designer.cs">
+      <DependentUpon>DemoEncryptAndDecrypt.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CSSide\all\DemoEnvelop.aspx.cs">
+      <DependentUpon>DemoEnvelop.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CSSide\all\DemoEnvelop.aspx.designer.cs">
+      <DependentUpon>DemoEnvelop.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CSSide\all\DemoLogin.aspx.cs">
+      <DependentUpon>DemoLogin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CSSide\all\DemoLogin.aspx.designer.cs">
+      <DependentUpon>DemoLogin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CSSide\all\DemoSign.aspx.cs">
+      <DependentUpon>DemoSign.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CSSide\all\DemoSign.aspx.designer.cs">
+      <DependentUpon>DemoSign.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServerSide\CertProperty.aspx.cs">
+      <DependentUpon>CertProperty.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServerSide\CertProperty.aspx.designer.cs">
+      <DependentUpon>CertProperty.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerSide\CertVerify.aspx.cs">
+      <DependentUpon>CertVerify.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServerSide\CertVerify.aspx.designer.cs">
+      <DependentUpon>CertVerify.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerSide\CheckVID.aspx.cs">
+      <DependentUpon>CheckVID.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServerSide\CheckVID.aspx.designer.cs">
+      <DependentUpon>CheckVID.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerSide\FileBase64.aspx.cs">
+      <DependentUpon>FileBase64.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServerSide\FileBase64.aspx.designer.cs">
+      <DependentUpon>FileBase64.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerSide\FileEncryptAndDecrypt.aspx.cs">
+      <DependentUpon>FileEncryptAndDecrypt.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServerSide\FileEncryptAndDecrypt.aspx.designer.cs">
+      <DependentUpon>FileEncryptAndDecrypt.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerSide\FileEnvelopAndEnvelopVerify.aspx.cs">
+      <DependentUpon>FileEnvelopAndEnvelopVerify.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServerSide\FileEnvelopAndEnvelopVerify.aspx.designer.cs">
+      <DependentUpon>FileEnvelopAndEnvelopVerify.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerSide\FileHash.aspx.cs">
+      <DependentUpon>FileHash.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServerSide\FileHash.aspx.designer.cs">
+      <DependentUpon>FileHash.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerSide\FileSignVerify.aspx.cs">
+      <DependentUpon>FileSignVerify.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServerSide\FileSignVerify.aspx.designer.cs">
+      <DependentUpon>FileSignVerify.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerSide\GetCertificateSet.aspx.cs">
+      <DependentUpon>GetCertificateSet.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServerSide\GetCertificateSet.aspx.designer.cs">
+      <DependentUpon>GetCertificateSet.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerSide\StringBase64.aspx.cs">
+      <DependentUpon>StringBase64.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServerSide\StringBase64.aspx.designer.cs">
+      <DependentUpon>StringBase64.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerSide\StringEncryptAndDecrypt.aspx.cs">
+      <DependentUpon>StringEncryptAndDecrypt.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServerSide\StringEncryptAndDecrypt.aspx.designer.cs">
+      <DependentUpon>StringEncryptAndDecrypt.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerSide\StringEnvelopAndEnvelopVerify.aspx.cs">
+      <DependentUpon>StringEnvelopAndEnvelopVerify.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServerSide\StringEnvelopAndEnvelopVerify.aspx.designer.cs">
+      <DependentUpon>StringEnvelopAndEnvelopVerify.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerSide\StringHash.aspx.cs">
+      <DependentUpon>StringHash.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServerSide\StringHash.aspx.designer.cs">
+      <DependentUpon>StringHash.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerSide\StringSignVerify.aspx.cs">
+      <DependentUpon>StringSignVerify.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServerSide\StringSignVerify.aspx.designer.cs">
+      <DependentUpon>StringSignVerify.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerSide\StringSignVerifyAndCertVerify.aspx.cs">
+      <DependentUpon>StringSignVerifyAndCertVerify.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServerSide\StringSignVerifyAndCertVerify.aspx.designer.cs">
+      <DependentUpon>StringSignVerifyAndCertVerify.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerSide\StringSignVerifyProc.aspx.cs">
+      <DependentUpon>StringSignVerifyProc.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServerSide\StringSignVerifyProc.aspx.designer.cs">
+      <DependentUpon>StringSignVerifyProc.aspx</DependentUpon>
+    </Compile>
+    <Content Include="ClientSide\activeX\CertProperty.html" />
+    <Content Include="ClientSide\activeX\CertVerify.html" />
+    <Content Include="ClientSide\activeX\CheckVID.html" />
+    <Content Include="ClientSide\activeX\FileAddSignVerify.html" />
+    <Content Include="ClientSide\activeX\FileBase64.html" />
+    <Content Include="ClientSide\activeX\FileEncryptAndDecrypt.html" />
+    <Content Include="ClientSide\activeX\FileEnvelopAndEnvelopVerify.html" />
+    <Content Include="ClientSide\activeX\FileHash.html" />
+    <Content Include="ClientSide\activeX\FileSignVerify.html" />
+    <Content Include="ClientSide\activeX\GenSignatureVerify.html" />
+    <Content Include="ClientSide\activeX\GetCertificateSet.html" />
+    <Content Include="ClientSide\activeX\LoginProcess.html" />
+    <Content Include="ClientSide\activeX\StringBase64.html" />
+    <Content Include="ClientSide\activeX\StringEncryptAndDecrypt.html" />
+    <Content Include="ClientSide\activeX\StringEnvelopAndEnvelopVerify.html" />
+    <Content Include="ClientSide\activeX\StringHash.html" />
+    <Content Include="ClientSide\activeX\StringSignVerify.html" />
+    <Content Include="CSSide\all\DemoAddsign.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="CSSide\all\DemoEncryptAndDecrypt.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="CSSide\all\DemoEnvelop.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="CSSide\all\DemoLogin.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="CSSide\all\DemoSign.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="Global.asax">
+      <SubType>Component</SubType>
+    </Content>
+    <Content Include="index.html" />
+    <Content Include="ServerSide\CertProperty.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="ServerSide\CertVerify.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="ServerSide\CheckVID.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="ServerSide\FileBase64.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="ServerSide\FileEncryptAndDecrypt.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="ServerSide\FileEnvelopAndEnvelopVerify.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="ServerSide\FileHash.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="ServerSide\FileSignVerify.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="ServerSide\GetCertificateSet.aspx" />
+    <Content Include="ServerSide\StringBase64.aspx" />
+    <Content Include="ServerSide\StringEncryptAndDecrypt.aspx" />
+    <Content Include="ServerSide\StringEnvelopAndEnvelopVerify.aspx" />
+    <Content Include="ServerSide\StringHash.aspx" />
+    <Content Include="ServerSide\StringSignVerify.aspx" />
+    <Content Include="ServerSide\StringSignVerifyAndCertVerify.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="ServerSide\StringSignVerifyProc.aspx" />
+    <Content Include="tradesign2.css" />
+    <Content Include="TSToolkitConfig.js" />
+    <Content Include="TSToolkitObject.js" />
+    <Content Include="Web.config" />
+    <EmbeddedResource Include="Global.asax.resx">
+      <DependentUpon>Global.asax.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerSide\CertProperty.aspx.resx">
+      <DependentUpon>CertProperty.aspx.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerSide\CertVerify.aspx.resx">
+      <DependentUpon>CertVerify.aspx.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerSide\CheckVID.aspx.resx">
+      <DependentUpon>CheckVID.aspx.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerSide\FileBase64.aspx.resx">
+      <DependentUpon>FileBase64.aspx.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerSide\FileEncryptAndDecrypt.aspx.resx">
+      <DependentUpon>FileEncryptAndDecrypt.aspx.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerSide\FileEnvelopAndEnvelopVerify.aspx.resx">
+      <DependentUpon>FileEnvelopAndEnvelopVerify.aspx.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerSide\FileHash.aspx.resx">
+      <DependentUpon>FileHash.aspx.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerSide\FileSignVerify.aspx.resx">
+      <DependentUpon>FileSignVerify.aspx.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerSide\GetCertificateSet.aspx.resx">
+      <DependentUpon>GetCertificateSet.aspx.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerSide\StringBase64.aspx.resx">
+      <DependentUpon>StringBase64.aspx.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerSide\StringEncryptAndDecrypt.aspx.resx">
+      <DependentUpon>StringEncryptAndDecrypt.aspx.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerSide\StringEnvelopAndEnvelopVerify.aspx.resx">
+      <DependentUpon>StringEnvelopAndEnvelopVerify.aspx.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerSide\StringHash.aspx.resx">
+      <DependentUpon>StringHash.aspx.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerSide\StringSignVerify.aspx.resx">
+      <DependentUpon>StringSignVerify.aspx.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerSide\StringSignVerifyAndCertVerify.aspx.resx">
+      <DependentUpon>StringSignVerifyAndCertVerify.aspx.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerSide\StringSignVerifyProc.aspx.resx">
+      <DependentUpon>StringSignVerifyProc.aspx.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v8.0\WebApplications\Microsoft.WebApplication.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/NetToolkitDemo</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

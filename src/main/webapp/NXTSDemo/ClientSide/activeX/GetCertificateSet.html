@@ -1,0 +1,199 @@
+﻿<!DOCTYPE HTML PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<title>Lomboz JSP</title>
+<link rel="stylesheet" href="../../tradesign2.css" type="text/css">
+<SCRIPT language=javascript src="../../TSToolkitConfig.js"></script>
+<SCRIPT language=javascript>
+<!--
+
+function GetCertificateSet(form)
+{
+	var nRet;
+	var certdn, storage;
+	
+	// 모든 Condition 설정.
+	nRet = TSToolkit.SetConfig("test", CA_LDAP_INFO, CTL_INFO, POLICIES, 
+							INC_CERT_SIGN, INC_SIGN_TIME_SIGN, INC_CRL_SIGN, INC_CONTENT_SIGN,
+							USING_CRL_CHECK, USING_ARL_CHECK);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	nRet = TSToolkit.SetEncryptionAlgoAndMode(SYMMETRIC_ID_SEED, SYMMETRIC_MODE_CBC); 
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+	// 인증서 로딩시 KM 인증서 검증 옵션 켜기
+	TSToolkit.SetEachConfig("LOAD_CERT_KM", "TRUE");
+	
+//	nRet = TSToolkit.SelectCertificate(REMOVABLE_DISK, 0, "");
+	nRet = TSToolkit.SelectCertificate(STORAGE_TYPE, 0, "");
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	nRet = TSToolkit.GetCertificate(CERT_TYPE_SIGN, DATA_TYPE_PEM);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	else
+		form.signCert.value = TSToolkit.OutData;
+
+	nRet = TSToolkit.GetPrivateKey(CERT_TYPE_SIGN, DATA_TYPE_PEM, "");
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+//		return false;
+	}
+	else
+		form.signPri1.value =  TSToolkit.OutData;
+
+	nRet = TSToolkit.GetCertificate(CERT_TYPE_KM, DATA_TYPE_PEM);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	else
+		form.kmCert.value =  TSToolkit.OutData;
+
+	nRet = TSToolkit.GetPrivateKey(CERT_TYPE_KM, DATA_TYPE_PEM, "");
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+//		return false;
+	}
+	else
+		form.kmPri1.value =  TSToolkit.OutData;
+
+	if (form.newPwd.value)
+	{
+		nRet = TSToolkit.GetPrivateKey(CERT_TYPE_SIGN, DATA_TYPE_PEM, form.newPwd.value);
+		if (nRet > 0)
+		{
+			alert(nRet + " : " + TSToolkit.GetErrorMessage());
+			return false;
+		}
+		form.signPri2.value =  TSToolkit.OutData;
+
+		nRet = TSToolkit.GetPrivateKey(CERT_TYPE_KM, DATA_TYPE_PEM, form.newPwd.value);
+		if (nRet > 0)
+		{
+			alert(nRet + " : " + TSToolkit.GetErrorMessage());
+			return false;
+		}
+		form.kmPri2.value =  TSToolkit.OutData;
+
+		alert("새암호 개인키 검증");
+		nRet = TSToolkit.LoadCertificate(DATA_TYPE_PEM, form.signCert.value, form.signPri2.value, form.kmCert.value, form.kmPri2.value, form.newPwd.value);
+		if (nRet > 0)
+		{
+			alert(nRet + " : " + TSToolkit.GetErrorMessage());
+			return false;
+		}
+	}
+	alert("Success!!");
+}
+
+function CheckCertificateSet(form)
+{
+	var nRet;
+	var certdn, storage;
+	
+	// 모든 Condition 설정.
+	nRet = TSToolkit.SetConfig("test", CA_LDAP_INFO, CTL_INFO, POLICIES, 
+							INC_CERT_SIGN, INC_SIGN_TIME_SIGN, INC_CRL_SIGN, INC_CONTENT_SIGN,
+							USING_CRL_CHECK, USING_ARL_CHECK);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+	if (form.newPwd.value)
+	{
+		alert("새암호 개인키 검증");
+		nRet = TSToolkit.LoadCertificate(DATA_TYPE_PEM, form.signCert.value, form.signPri2.value, form.kmCert.value, form.kmPri2.value, form.newPwd.value);
+		if (nRet > 0)
+		{
+			alert(nRet + " : " + TSToolkit.GetErrorMessage());
+			return false;
+		}
+	}
+    else
+    {
+		alert("새암호 없음");
+    }
+
+	alert("Success!!");
+}
+
+-->
+</script>
+</head>
+<body bgcolor="#FFFFFF">
+<P>
+<script language="javascript" src="../../TSToolkitObject.js"></script>	
+</P>
+<form name="myForm">
+
+<table border="10" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="center"><font color="#FFFFFF">== 인증서 꺼내기 기능 ==</font></td></tr>
+</table>
+<table border="10" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="left"><font color="#FFFFFF">사용자의 서명용 인증서와 서명용 개인키, 암호용 인증서와 암호용 개인키를 가져 옵니다.<br> 
+또한 새로운 암호를 지정함으로써 새로운 암호로 암호화된 개인키를 가져올 수 있습니다.  </font></td></tr>
+</table>
+
+<br>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">서명용 인증서 : <input type="text" name="signCert" size="80">
+    </td>
+  </tr>
+  <tr>
+    <td align="left">원 암호 서명용 개인키 : <input type="text" name="signPri1" size="80">
+    </td>
+  </tr>
+  <tr>
+    <td align="left">암호용 인증서 : <input type="text" name="kmCert" size="80">
+    </td>
+  </tr>
+  <tr>
+    <td align="left">원 암호 암호용 개인키 : <input type="text" name="kmPri1" size="80">
+    </td>
+  </tr>
+  <tr>
+    <td align="left">&nbsp;
+    </td>
+  </tr>
+  <tr>
+    <td align="left">새 암호 : (새로운 암호로 암호화된 개인키를 얻으시려면 입력하세요.)<br><input type="text" name="newPwd" size="80">
+    </td>
+  </tr>
+  <tr>
+    <td align="left">새 암호 서명용 개인키 : <input type="text" name="signPri2" size="80">
+    </td>
+  </tr>
+  <tr>
+    <td align="left">새 암호 암호용 개인키 : <input type="text" name="kmPri2" size="80">
+    </td>
+  </tr>
+  <tr><td><input type="button" name="test3" value="인증서 꺼내기" onclick="javascript:GetCertificateSet(myForm);"></td></tr>
+  <tr><td><input type="button" name="test3" value="새 암호 확인" onclick="javascript:CheckCertificateSet(myForm);"></td></tr>
+  <tr><td align="right"><input type="reset" name="reset" value="화면 지우기"></td></tr>
+</table>
+</form>
+</body>
+
+</html>

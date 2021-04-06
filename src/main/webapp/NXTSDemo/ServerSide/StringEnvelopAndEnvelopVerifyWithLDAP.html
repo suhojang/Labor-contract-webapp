@@ -1,0 +1,159 @@
+﻿<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<TITLE></TITLE>
+<link rel="stylesheet" href="../tradesign2.css" type="text/css">
+<script language=javascript src='../TSToolkitConfig.js'></script>
+<SCRIPT language=javascript>
+<!--
+
+function Envelop(form)
+{
+	var nRet, secret, envelopedData;
+    var plainText, keyPwd;
+    plainText = form.plainText.value;
+    
+	// 모든 Condition 설정.
+	nRet = TSToolkit.SetConfig("test", CA_LDAP_INFO, CTL_INFO, POLICIES, 
+							INC_CERT_SIGN, INC_SIGN_TIME_SIGN, INC_CRL_SIGN, INC_CONTENT_SIGN,
+							USING_CRL_CHECK, USING_ARL_CHECK);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	// LDAP에서 인증서 가져오기.
+	nRet = TSToolkit.GetDataFromLDAP("cn=테스트(KTNET),ou=KTNET,ou=LicensedCA,o=TradeSign,c=KR", DATA_TYPE_KM_CERT); 
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	var cert;
+	cert = TSToolkit.OutData;
+
+	nRet = TSToolkit.SetPeerCertificate(cert); 
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+	nRet = TSToolkit.EnvelopData(plainText); 
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+    
+    form.data1.value = TSToolkit.OutData;
+    alert("Envelop Success!!");
+    
+    return true;
+}
+function Develop(form)
+{
+	var nRet, secret, data;
+	var certdn, storage;
+    // 복호화할 데이타 설정하기.
+    var envelopedData, keyPwd;
+    envelopedData = form.data1.value;
+    
+	// 모든 Condition 설정.
+	nRet = TSToolkit.SetConfig("test", CA_LDAP_INFO, CTL_INFO, POLICIES, 
+							INC_CERT_SIGN, INC_SIGN_TIME_SIGN, INC_CRL_SIGN, INC_CONTENT_SIGN,
+							USING_CRL_CHECK, USING_ARL_CHECK);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	nRet = TSToolkit.SetEncryptionAlgoAndMode(SYMMETRIC_ID_SEED, SYMMETRIC_MODE_CBC); 
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+	nRet = TSToolkit.LoadCertificate(DATA_TYPE_PEM, pemSignCert, pemSignKey, pemKMCert, pemKMKey, "asdfasdf");
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+    
+	nRet = TSToolkit.DecryptEnvelopedData(envelopedData);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+    
+    envelopVerifyMsg = TSToolkit.OutData;
+    
+    form.data2.value = envelopVerifyMsg;
+
+	alert("Develop Success!!");
+    return true;
+}
+-->
+</SCRIPT>
+</HEAD>
+<BODY>
+<P>
+<script language="javascript" src="../MultiToolkitObject.js"></script>	
+</P>
+
+<form name="myform">
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== Envelop 될 원문 데이타를 입력하세요 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <textarea name="plainText" rows="6" cols="80"></textarea>
+    </td>
+  </tr>
+  <tr>
+    <td align="left">
+      <INPUT TYPE="button" name="button1" Value="Envelop 하기" style="width:150" onClick="Envelop(myform);" >
+    </td>
+  </tr>
+</table>
+<br>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFF">== EnvelopedData ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <textarea name="data1" rows="6" cols="80"></textarea>
+    </td>
+  </tr>
+  <tr>
+    <td align="left">
+      <INPUT TYPE="button" name="button6" Value="Develop" style="width:150" onClick="Develop(myform);" >
+    </td>
+  </tr>
+</table>
+<br>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFF">== Develop 후 나온 원문데이타 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <textarea name="data2" rows="6" cols="80"></textarea>
+    </td>
+  </tr>
+  <tr>
+    <td align="right">
+      <INPUT TYPE="reset" name="Clear" Value="화면 지우기" style="width:150">
+    </td>
+  </tr>
+</table>
+</form>
+</BODY>
+</HTML>

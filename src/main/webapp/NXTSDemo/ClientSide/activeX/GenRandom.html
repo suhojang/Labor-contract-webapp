@@ -1,0 +1,80 @@
+﻿<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<TITLE></TITLE>
+<link rel="stylesheet" href="../../tradesign2.css" type="text/css">
+<SCRIPT language=javascript src="../../TSToolkitConfig.js"></script>
+<SCRIPT language=javascript>
+<!--
+function GenRandom(form)
+{
+	var nRet, secret, encryptedData;
+	var nlength;
+	nlength = form.length.value;
+	alert(nlength);
+	nRet = TSToolkit.GenerateRandomNumber(nlength); 
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	var random;
+	random = TSToolkit.OutData;
+	form.random.value = random;
+	
+	alert("Success!!");
+	return true;
+}
+-->
+</SCRIPT>
+</HEAD>
+<BODY>
+<P>
+<script language="javascript" src="../../TSToolkitObject.js"></script>	
+</P>
+
+<form name="myform">
+
+<table border="10" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="center"><font color="#FFFFFF">== 난수생성 기능 함수 ==</font></td></tr>
+</table>
+<table border="10" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="center"><font color="#FFFFFF">바이트 단위로 길이를 입력한 만큼 랜덤한 난수를 생성합니다.</font></td></tr>
+</table>
+
+
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== Random 의 길이를 입력하세요 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <input type="text" name="length" size="80">
+    </td>
+  </tr>
+  <tr>
+    <td align="left">
+      <INPUT TYPE="button" name="button1" Value="Random 생성하기" style="width:150" onClick="GenRandom(myform);" >
+    </td>
+  </tr>
+</table>
+<br>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFF">== Random ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <textarea name="random" rows="6" cols="80"></textarea>
+    </td>
+  </tr>
+  <tr>
+    <td align="right">
+      <INPUT TYPE="reset" name="Clear" Value="화면 지우기" style="width:150">
+    </td>
+  </tr>
+</table>
+</form>
+</BODY>
+</HTML>

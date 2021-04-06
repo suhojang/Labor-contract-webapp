@@ -1,0 +1,82 @@
+﻿<!DOCTYPE HTML PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<title>Lomboz JSP</title>
+<link rel="stylesheet" href="../../tradesign2.css" type="text/css">
+<SCRIPT language=javascript src="../../TSToolkitConfig.js"></script>
+<SCRIPT language=javascript>
+<!--
+
+function verifyCertificate()
+{
+	//인증서 검증.
+	var nRet;
+	var certdn, storage;
+	
+	// 모든 Condition 설정.
+	nRet = TSToolkit.SetConfig("test", CA_LDAP_INFO, CTL_INFO, POLICIES, 
+							INC_CERT_SIGN, INC_SIGN_TIME_SIGN, INC_CRL_SIGN, INC_CONTENT_SIGN,
+							USING_CRL_CHECK, USING_ARL_CHECK);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	// 인증서 로딩시 KM 인증서 검증 옵션 켜기
+	TSToolkit.SetEachConfig("LOAD_CERT_KM", "TRUE");
+	
+	// 사용자가 자신의 인증서를 선택. 
+	nRet = TSToolkit.SelectCertificate(STORAGE_TYPE, 0, "");
+	if (nRet > 0)
+	{
+		alert("SelectCertificate : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	nRet = TSToolkit.GetCertificate(CERT_TYPE_SIGN, DATA_TYPE_PEM);
+	if (nRet > 0)
+	{
+		alert("GetCertificate : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	var cert;
+	cert = TSToolkit.OutData;
+
+	nRet = TSToolkit.CertificateValidation(cert);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		if (nRet == 141)
+		{
+			var revokedTime;
+			revokedTime = TSToolkit.OutData;
+			alert("폐지 또는 효력정지 시각 : " + revokedTime);
+		}
+		return false;
+	}
+	
+	alert("Success!!");
+}
+
+-->
+</script>
+</head>
+<body bgcolor="#FFFFFF">
+<P>
+<script language="javascript" src="../../TSToolkitObject.js"></script>	
+<form>
+
+<table border="10" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="center"><font color="#FFFFFF">== 인증서 검증 기능 ==</font></td></tr>
+</table>
+<table border="10" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="left"><font color="#FFFFFF">인증서의 체인, 유효기간, 정책과 CA인증서의 폐지여부를 확인합니다. </font></td></tr>
+</table>
+
+<input type="button" name="test" value="인증서검증" onclick="javascript:verifyCertificate();">
+</form>
+</body>
+
+</html>

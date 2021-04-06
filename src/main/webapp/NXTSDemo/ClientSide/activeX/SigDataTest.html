@@ -1,0 +1,337 @@
+﻿<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<TITLE></TITLE>
+<link rel="stylesheet" href="../../common.css" type="text/css">
+<!--<link rel="stylesheet" href="../../tradesign2.css" type="text/css">-->
+<SCRIPT language=javascript src="../../eventFunc.js"></script>
+<SCRIPT language=javascript src="../../TSToolkitConfig.js"></script>
+<SCRIPT language=javascript>
+<!--
+function MakeSigData(form)
+{
+
+	var nRet, certdn, storage;
+	// 서명할 원본 정보 설정
+	var contentData, fileName, lastModificationTime;
+	contentData = form.content.value;
+	fileName = form.fileName.value;	
+	lastModificationTime = form.lastModificationTime.value;	
+	
+	// 모든 Condition 설정.
+	nRet = TSToolkit.SetConfig("test", CA_LDAP_INFO, CTL_INFO, POLICIES, 
+							INC_CERT_SIGN, INC_SIGN_TIME_SIGN, INC_CRL_SIGN, INC_CONTENT_SIGN,
+							USING_CRL_CHECK, USING_ARL_CHECK);
+		if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	// 인증서 로딩시 KM 인증서 검증 옵션 켜기
+	TSToolkit.SetEachConfig("LOAD_CERT_KM", "TRUE");
+	
+	// 사용자가 자신의 인증서를 선택. 
+	nRet = TSToolkit.SelectCertificate(STORAGE_TYPE, 0, "");
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+	nRet = TSToolkit.MakeSigData(contentData, fileName, lastModificationTime);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	form.sigData.value = TSToolkit.OutData;	
+	form.oldSigData.value = TSToolkit.OutData;	
+	
+	alert("Sucess!!!");
+}
+
+function AddSignInSigData(form)
+{
+	var nRet, certdn, storage;
+	// 서명할 SIG 데이터 설정
+	var sigData, contentData;
+	sigData = form.oldSigData.value;
+	
+	// 모든 Condition 설정.
+	nRet = TSToolkit.SetConfig("test", CA_LDAP_INFO, CTL_INFO, POLICIES, 
+							INC_CERT_SIGN, INC_SIGN_TIME_SIGN, INC_CRL_SIGN, INC_CONTENT_SIGN,
+							USING_CRL_CHECK, USING_ARL_CHECK);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+	// 인증서 로딩시 KM 인증서 검증 옵션 켜기
+	TSToolkit.SetEachConfig("LOAD_CERT_KM", "TRUE");
+
+	// 사용자가 자신의 인증서를 선택. 
+	nRet = TSToolkit.SelectCertificate(STORAGE_TYPE, 0, "");
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+	nRet = TSToolkit.AddSignInSigData(sigData);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	form.sigData.value = TSToolkit.OutData;
+	
+	alert("Sucess!!!");
+}
+
+function VerifySigData(form)
+{
+	// 검증할 데이터 설정
+	var sigData, contentData;
+	sigData = form.sigData.value;
+	var nSignDepth;
+
+	// 모든 Condition 설정.
+	nRet = TSToolkit.SetConfig("test", CA_LDAP_INFO, CTL_INFO, POLICIES, 
+							INC_CERT_SIGN, INC_SIGN_TIME_SIGN, INC_CRL_SIGN, INC_CONTENT_SIGN,
+							USING_CRL_CHECK, USING_ARL_CHECK);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+//	nRet = TSToolkit.VerifySigData(sigData, "E:\\");
+	nRet = TSToolkit.VerifySigData(sigData, "");
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+//	alert(TSToolkit.OutData);
+	
+	var SIG_FILENAME = 1;
+	var SIG_LASTMODIFYTIME = 2;
+	var SIG_CONTENT = 3;
+	nRet = TSToolkit.GetSigInfo(SIG_CONTENT);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	form.content2.value = TSToolkit.OutData;	
+
+	nRet = TSToolkit.GetSigInfo(SIG_FILENAME);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	form.fileName2.value = TSToolkit.OutData;	
+	
+	nRet = TSToolkit.GetSigInfo(SIG_LASTMODIFYTIME);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	form.lastModificationTime2.value = TSToolkit.OutData;	
+	
+	// 서명 갯수 꺼내기.
+	var signerIndex;
+	nRet = TSToolkit.GetSignerCount();
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	signerIndex = TSToolkit.OutDataNum;
+
+	for(i=1;i<=signerIndex;i++){
+		// 서명자 인증서 DN 꺼내기.
+		var signerDN;
+		nRet = TSToolkit.GetSignerDN(i);
+		if (nRet > 0)
+		{
+			alert(nRet + " : " + TSToolkit.GetErrorMessage());
+			return false;
+		}
+		signerDN = TSToolkit.OutData;
+		
+		// 서명시간 꺼내기
+		var signingTime;
+		nRet = TSToolkit.GetSigningTime(i);
+		if (nRet > 0)
+		{
+			alert(nRet + " : " + TSToolkit.GetErrorMessage());
+			return false;
+		}
+		signingTime = TSToolkit.OutData;
+
+		alert(i + " 번째  : " + signerDN + "\r\n서명시간 : " + signingTime);
+		
+		// 서명자 인증서 꺼내기
+		var signerCert;
+		nRet = TSToolkit.GetSignerCert(i);
+		if (nRet > 0)
+		{
+			alert(nRet + " : " + TSToolkit.GetErrorMessage());
+			return false;
+		}
+		signerCert = TSToolkit.OutData;
+		
+		// 인증서 검증하기
+		nRet = TSToolkit.CertificateValidation(signerCert);
+		if (nRet > 0)
+		{
+			alert(nRet + " : " + TSToolkit.GetErrorMessage());
+			if (nRet == 141) // 검증시 유효하지 않은 경우
+			{
+				var revokedTime;
+				revokedTime = TSToolkit.OutData;
+				alert("폐지 또는 효력정지 시각 : " + revokedTime);
+			}
+		}
+		// 인증서 유효기간 만료일 꺼내기
+		var certValidTo;
+		nRet = TSToolkit.GetCertificatePropertyFromID(signerCert, CERT_ATTR_VALID_TO);
+		if (nRet > 0)
+		{
+			alert(nRet + " : " + TSToolkit.GetErrorMessage());
+			return false;
+		}
+		certValidTo = TSToolkit.OutData;
+		alert(certValidTo);
+		//var realName;
+		//nRet = TSToolkit.GetCertificatePropertyFromID(signerCert, CERT_ATTR_SAN_REALNAME);
+		//if (nRet > 0)
+		//{
+		//	alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		//	return false;
+		//}		
+		//realName = TSToolkit.OutData;
+		//alert(realName);
+	}
+	
+	// 메모리 정리하기.
+	nRet = TSToolkit.ClearMemory();
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+	alert("Sucess!!!");
+	return true;
+}
+-->
+</SCRIPT>
+</HEAD>
+<BODY>
+<P>
+<script language="javascript" src="../../TSToolkitObject.js"></script>	
+</P>
+
+<form name="myform">
+<img src="../../images/view1.gif" id="tab1" onclick="javascript:justTab(2, 1, 3);"><img src="../../images/view2.gif" id="tab2" onclick="javascript:justTab(3, 1, 3);"><br>
+<table border="0" cellpadding="0" cellspacing="0" id="txt1" style="display:block;" width="700" class="tabbox">
+<tr> 
+  <td width="2%" valign="top" rowspan="2"><img src="../../images/arrow_01.gif" width="8" height="13"></td>
+  <td width="596"><p class="txtmargin5">각 탭을 선택하세요.</td>
+</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" id="txt2" style="display:none;" width="700" class="tabbox">
+<tr> 
+  <td width="1%" rowspan="2" valign="top"><img src="../../images/square_01.gif"></td>
+  <td width="99%"><p class="bold">Sig File Test<br></td>
+</tr>
+<tr>
+  <td width="99%">
+    <table border="0" cellpadding="3" cellspacing="1" class="cellback" width="90%">
+    <tr> 
+      <td width="17%" class="celltop" align="center"><p>Sig Data</p></td>
+      <td class="celllight">등기소에 등기를 등록할 때 사용하는 형태로 SignedData 와 파일명, 최종수정시각, 파일내용을 포함하고 있습니다.</td>
+    </tr>
+    <tr> 
+      <td class="celltop" width="17%" align="center"><p>MakeSigData</p></td>
+      <td class="celllight">Content, 파일명, 최종 수정시각을 받아 SIG 를 생성합니다.</td>
+    </tr>
+    <tr> 
+      <td class="celltop" width="17%" align="center"><p>AddSignInSigData</p></td>
+      <td class="celllight">이미 만들어진 SIG 를 읽어서 서명을 추가합니다.</td>
+    </tr>
+    <tr> 
+      <td class="celltop" width="17%" align="center"><p>VerifySigData</p></td>
+      <td class="celllight">SIG 의 내용을 분석하고, 내부에 포함된 SignedData 를 검증하여 SIG 의 무결정을 검증합니다.<br><br>
+	  검증에 성공할 경우 Content 를 얻을 수 있습니다.
+	  </td>
+    </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" id="txt3" style="display:none;" width="700" class="tabbox">
+<tr> 
+  <td width="1%" rowspan="2" valign="top"><img src="../../images/square_01.gif"></td>
+  <td width="99%"><p class="bold">Sig Data Test</td>
+</tr>
+<tr> 
+  <td>
+    <table border="0" cellpadding="3" cellspacing="1" class="cellback" width="95%">
+    <tr> 
+      <td class="celltop" width="17%" align="center"><p>1. 신규 SIG 생성</p></td>
+      <td class="celllight3">
+		<table width="100%">
+			<tr><td class="excon">1.1 content(Base64 Encoding)를 입력하세요</td></tr>
+			<tr><td><textarea name="content" rows="6" cols="80"></textarea></td></tr>
+			<tr><td class="excon">1.2 파일명 을 입력하세요.</td></tr>
+			<tr><td><input type="text" name="fileName" style="width:500" value="가나다.html"></td></tr>
+			<tr><td class="excon">1.3 최종수정시각을 입력하세요. (형식:YYYY-MM-DD HH24:mi:ss, LocalTime)</td></tr>
+			<tr><td><input type="text" name="lastModificationTime" style="width:500" value="2014-03-25 12:00:01"></td></tr>
+			<tr><td class="excon">1.4 SIG 데이터를 생성하세요</td></tr>
+			<tr><td><INPUT TYPE="button" name="button1" Value="MakeSigData" style="width:150" onClick="MakeSigData(myform);" ></td></tr>
+		</table>
+	  </td>
+    </tr>
+    <tr> 
+      <td class="celltop" width="17%" align="center"><p>2. SIG 파일 서명 추가 생성</p></td>
+      <td class="celllight3">
+		<table width="100%">
+			<tr><td class="excon">2.1 이미 생성된 SIG 데이터 를 입력하세요</td></tr>
+			<tr><td><textarea name="oldSigData" rows="6" cols="80"></textarea></td></tr>
+			<tr><td class="excon">2.2 새로운 SIG 데이터을 생성하세요</td></tr>
+			<tr><td><INPUT TYPE="button" name="button1" Value="AddSignInSigData" style="width:150" onClick="AddSignInSigData(myform);" ></td></tr>
+		</table>
+	  </td>
+    </tr>
+    <tr> 
+      <td class="celltop" width="17%" align="center"><p>2. SIG 파일 검증</p></td>
+      <td class="celllight3">
+		<table width="100%">
+			<tr><td class="excon">3.1 검증할 SIG 파일의 경로를 입력하세요</td></tr>
+			<tr><td><textarea name="sigData" rows="6" cols="80"></textarea></td></tr>
+			<tr><td class="excon">3.2 SIG 파일을 검증하세요</td></tr>
+			<tr><td><INPUT TYPE="button" name="button1" Value="VerifySigData" style="width:150" onClick="VerifySigData(myform);" ></td></tr>
+			<tr><td class="excon">3.3 SIG 파일 내에 포함되어 있는 Content 입니다.</td></tr>
+			<tr><td><textarea name="content2" rows="6" cols="80"></textarea></td></tr>
+			<tr><td>파일명 : <input type="text" name="fileName2" style="width:500"></td></tr>
+			<tr><td>최종수정시각 : <input type="text" name="lastModificationTime2" style="width:500"></td></tr>
+		</table>
+	  </td>
+    </tr>
+    <tr> 
+      <td class="celllight3" align="right" colspan="2"><INPUT TYPE="reset" name="Clear" Value="화면 지우기" style="width:150"></td>
+    </tr>
+    </table>
+  </td>
+</tr>
+</table>
+</form>
+</BODY>
+</HTML>

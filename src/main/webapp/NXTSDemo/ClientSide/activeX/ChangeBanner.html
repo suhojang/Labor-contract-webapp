@@ -1,0 +1,92 @@
+﻿<!DOCTYPE HTML PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<title>Lomboz JSP</title>
+<link rel="stylesheet" href="../../tradesign2.css" type="text/css">
+<SCRIPT language=javascript src="../../TSToolkitConfig.js"></script>
+<SCRIPT language=javascript>
+<!--
+
+function CertificateProperty()
+{
+	var nRet;
+	var certdn, storage;
+	
+	// 모든 Condition 설정.
+	// 1. 첫번째 파라미터 부분을 회사 명으로 설정하고. 
+	nRet = TSToolkit.SetConfig("test", CA_LDAP_INFO, CTL_INFO, POLICIES, 
+							INC_CERT_SIGN, INC_SIGN_TIME_SIGN, INC_CRL_SIGN, INC_CONTENT_SIGN,
+							USING_CRL_CHECK, USING_ARL_CHECK);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	// 2. 배너 이미지 링크 설정. 이부분이 없으면 기본 이미지 사용. 웹에서 못얻어와도 기본 이미지 사용.
+	nRet = TSToolkit.SetEachConfig("BANNER_URL", "testca.tradesign.net/~shhur/cert.png");
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	// 인증서 로딩시 KM 인증서 검증 옵션 켜기
+	TSToolkit.SetEachConfig("LOAD_CERT_KM", "TRUE");
+	
+	// 사용자가 자신의 인증서를 선택. 
+	nRet = TSToolkit.SelectCertificate(STORAGE_TYPE, 0, "");
+	if (nRet > 0)
+	{
+		if (nRet == 100)
+		{
+			alert("사용자 취소 : " + TSToolkit.GetErrorMessage());
+		}
+		else
+		{
+			alert("에러 : " + TSToolkit.GetErrorMessage());
+		}
+		return false;
+	}
+	nRet = TSToolkit.GetCertificate(CERT_TYPE_SIGN, DATA_TYPE_PEM);
+	if (nRet > 0)
+	{
+		alert("GetCertificate : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	var cert;
+	cert = TSToolkit.OutData
+
+	var str;
+	nRet = TSToolkit.GetCertificatePropertyFromID(cert, CERT_ATTR_SUBJECT_DN);
+	if (nRet > 0)
+	{
+		alert("GetCertificatePropertyFromID : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	str = "CERT_ATTR_SUBJECT_DN : " + TSToolkit.OutData;
+	alert (str);
+}
+-->
+</script>
+</head>
+<body bgcolor="#FFFFFF">
+<P>
+<script language="javascript" src="../../TSToolkitObject.js"></script>	
+</P>
+<form>
+
+
+<table border="10" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="center"><font color="#FFFFFF">== 배너 변경 기능 함수 ==</font></td></tr>
+</table>
+<table border="10" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="center"><font color="#FFFFFF">배너 이미지 링크 설정으로 배너를 변경합니다. 링크 설정이 없으면 기본 이미지를 사용합니다. </font></td></tr>
+</table>
+
+<input type="button" name="test" value="인증서정보" onclick="javascript:CertificateProperty();">
+</form>
+</body>
+
+</html>

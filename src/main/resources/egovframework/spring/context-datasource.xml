@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+								http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+
+	<bean id="propertyConfigurer"
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:/egovframework/property/globals.properties</value>
+            </list>
+        </property>
+    </bean>
+    
+    <!-- DataSource -->
+	<alias name="dataSource-${Globals.DbType}" alias="dataSource" />
+
+	<!-- mssql -->
+    <!-- <bean id="dataSource-mssql" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+        <property name="url" value="jdbc:sqlserver://192.168.0.55:1433;DatabaseName=MEDICARD_FC;SelectMethod=Cursor" />
+        <property name="username" value="sa"/>
+        <property name="password" value="1qazxsw2#EDC"/>
+    </bean> -->
+    
+	<!-- mysql 개발 -->
+	<!-- <bean id="dataSource-mysql" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+		<property name="url" value="jdbc:mysql://192.168.0.55:3306/smartClaim?allowMultiQueries=true"/>
+		<property name="username" value="root"/>
+		<property name="password" value="1qazxsw2#EDC"/>
+	</bean> -->
+	
+	<!-- mysql 운영 -->
+	<bean id="dataSource-mysql" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+		<property name="url" value="jdbc:mysql://125.129.102.229:3306/kcplaa?allowMultiQueries=true"/>
+		<!-- <property name="url" value="jdbc:mysql://110.10.129.34:3306/kcplaa?allowMultiQueries=true"/> -->
+		<!-- <property name="username" value="root"/>
+		<property name="password" value="1qazxsw2#EDC"/> -->
+		<!-- <property name="username" value="kcplaa"/>
+		<property name="password" value="kcplaa"/> -->
+		<property name="username" value="smartcms"/>
+		<property name="password" value="smartcms"/>
+		
+	</bean>
+	
+	<!-- Oracle -->
+<!--	
+	<bean id="dataSource-oracle" class="org.apache.commons.dbcp.BasicDataSource"	destroy-method="close">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:easyCompany2" />
+		<property name="username" value="" />
+		<property name="password" value="" />
+	</bean>
+-->
+	<!-- Altibase  -->
+<!--	
+	<bean id="dataSource-altibase" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="Altibase.jdbc.driver.AltibaseDriver" />
+		<property name="url" value="jdbc:Altibase://localhost:1721/easyCompany?encoding=UTF-8" />
+		<property name="username" value="" />
+		<property name="password" value="" />
+		<property name="maxActive" value="10" />
+	</bean>
+-->
+	<!-- Tibero  -->
+<!--	
+	<bean id="dataSource-tibero" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="com.tmax.tibero.jdbc.TbDriver" />
+		<property name="url" value="jdbc:tibero:thin:@localhost:1821:easyCompany" />
+		<property name="username" value="" />
+		<property name="password" value="" />
+	</bean>
+-->
+</beans>

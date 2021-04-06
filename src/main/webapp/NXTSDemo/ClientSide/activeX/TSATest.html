@@ -1,0 +1,165 @@
+﻿<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<TITLE></TITLE>
+<link rel="stylesheet" href="../../tradesign2.css" type="text/css">
+<SCRIPT language=javascript src="../../TSToolkitConfig.js"></script>
+<SCRIPT language=javascript>
+<!--
+function TSACheck(form)
+{
+	var nRet, isFile;
+	var tsaUrl, data, dataType, serviceType, ocspVersion, hashAlgo;
+
+	// TSA 서버 URL
+ 	tsaUrl = form.tsaUrl.value;
+	
+	// 데이터 및 형태 설정.
+	if (form.isFile.checked == true)
+	{
+		data = form.dataPath.value;
+		dataType = DATA_TYPE_FILE;
+	}
+	else
+	{
+		data = form.data.value;
+		dataType = DATA_TYPE_PEM;
+	}
+	
+	// 서비스 설정
+	if (form.serviceType.checked == true)
+	{
+		serviceType = "stamp";
+	}
+	else
+	{
+		serviceType = "token";
+	}
+
+	// 모든 Condition 설정.
+	nRet = TSToolkit.SetConfig("test", CA_LDAP_INFO, CTL_INFO, POLICIES, 
+							INC_CERT_SIGN, INC_SIGN_TIME_SIGN, INC_CRL_SIGN, INC_CONTENT_SIGN,
+							USING_CRL_CHECK, USING_ARL_CHECK);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+	// Hash  알고리즘 설정.
+	hashAlgo = HASH_ID_SHA1;
+	
+	// * 함수 설명
+	// serviceType : BSTR : 제공할 서비스 타입 "stamp" - Time Stamping서비스 or "token"-입력된 토큰 검증
+	// tsaUrl : BSTR : TSA 서버의 URL
+	// dataType : INT or SHORT : 
+	//			DATA_TYPE_PEM(0)  : cert 가 PEM 형태의 인증서임을 표시. 
+	//			DATA_TYPE_FILE(1) : cert 가 Binary(DER) 형태의 인증서 파일의 절대 경로임을 표시.
+	// data : BSTR : TimeStamping 할 데이터 또는 token 검증할 데이터나 그 파일의 절대 경로
+	// hashAlgo : INT or SHOT : HASH 알고리즘.
+	//
+	// * 내부에서 해야할 일.
+	// - dataType 에 따라 데이터 파일을 읽던가, 데이터 처리를 한다. 
+	// - serviceType 에 따라 입력된 데이터로 TimeStamping 또는 Token 검증을 진행한다.
+	// - TSTInfo를 String 형태로 모든 값을 나열하여 하단의 TSToolkit.OutData 에서 꺼낼수 있도록 설정한다.
+	// - ResponseMessage 는 임의의 위치에 저장토록한다. (Debugging 용, 추후 삭제할 부분 표시)
+	//
+	nRet = TSToolkit.TSAService(serviceType, tsaUrl, dataType, data, hashAlgo);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	form.data1.value = TSToolkit.OutData;
+	
+	alert("Sucess!!!");
+}
+
+
+-->
+</SCRIPT>
+</HEAD>
+<BODY>
+<P>
+<script language="javascript" src="../../TSToolkitObject.js"></script>	
+</P>
+
+<form name="myform">
+
+<table border="10" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="center"><font color="#FFFFFF">== 타임 스탬프 기능 ==</font></td></tr>
+</table>
+<table border="10" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="left"><font color="#FFFFFF">TSP(Time Stamping Protocol)는 데이터가 특정시간 이전에 존재했음을 증명할 수 있는 서비스를 제공해 줍니다. 
+메시지 자체가 아닌 메시지의 해쉬값을 전달하며 주요 구성요소로는 고객과 타임스탬프 기관(TSA : Time-Stamp Authority)이 있습니다.<br><br> 
+타임스탬프 기관은 데이터가 특정시간에 존재했음을 증명하기 위한 타임스탬프 토큰을 생성하는 역할을 합니다.</font></td></tr>
+</table>
+
+
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== TSA 서비스 URL을 입력하세요 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <input type="text" name="tsaUrl" size="80" value="http://"></textarea>
+    </td>
+  </tr>
+</table>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== TSA 서비스를 이용할 데이터를 입력하세요 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <textarea name="data" rows="6" cols="80"></textarea>
+    </td>
+  </tr>
+</table>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== TSA 서비스를 이용할 데이터 파일의 절대경로를 입력하세요 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <input type="file" name="dataPath" size="65">
+    </td>
+  </tr>
+</table>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== TSA 서비스 조건을 선택하세요 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <INPUT TYPE="checkbox" name="isFile" checked>파일 OR 데이타를 Time Stamp 여부(Check-파일, UnCheck-데이타)<br>
+      <INPUT TYPE="checkbox" name="serviceType" checked>Time Stamp, TSA Token 검증 서비스 선택(Check-Time Stamping, UnCheck-Token 검증)<br>
+    </td>
+  </tr>
+  <tr>
+    <td align="left">
+      <INPUT TYPE="button" name="button1" Value="TSA 서비스 실행하기" style="width:150" onClick="TSACheck(myform);" >
+    </td>
+  </tr>
+</table>
+<br>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFF">== TSA Token 내용 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <textarea name="data1" rows="6" cols="80"></textarea>
+    </td>
+  </tr>
+  <tr>
+    <td align="right">
+      <INPUT TYPE="reset" name="Clear" Value="화면 지우기" style="width:150">
+    </td>
+  </tr>
+</table>
+
+</form>
+</BODY>
+</HTML>

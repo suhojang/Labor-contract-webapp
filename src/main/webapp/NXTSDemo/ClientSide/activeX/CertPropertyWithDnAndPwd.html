@@ -1,0 +1,117 @@
+﻿<!DOCTYPE HTML PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<title>Lomboz JSP</title>
+<link rel="stylesheet" href="../../tradesign2.css" type="text/css">
+<SCRIPT language=javascript src="../../TSToolkitConfig.js"></script>
+<SCRIPT language=javascript>
+<!--
+
+function CertificateProperty(form)
+{
+	var nRet;
+	var certdn, storage;
+	
+	// 모든 Condition 설정.
+	nRet = TSToolkit.SetConfig("test", CA_LDAP_INFO, CTL_INFO, POLICIES, 
+							INC_CERT_SIGN, INC_SIGN_TIME_SIGN, INC_CRL_SIGN, INC_CONTENT_SIGN,
+							USING_CRL_CHECK, USING_ARL_CHECK);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	// 인증서 로딩시 KM 인증서 검증 옵션 켜기
+	TSToolkit.SetEachConfig("LOAD_CERT_KM", "TRUE");
+	
+	// 사용자가 자신의 인증서를 선택. 
+	nRet = TSToolkit.SelectCertificate(STORAGE_TYPE, 2, form.dn.value +"|"+form.pwd.value);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	nRet = TSToolkit.GetCertificate(CERT_TYPE_SIGN, DATA_TYPE_PEM);
+	if (nRet > 0)
+	{
+		alert("GetCertificate : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	var cert;
+	cert = TSToolkit.OutData
+
+	var str;
+	TSToolkit.GetCertificatePropertyFromID(cert, CERT_ATTR_VERSION);
+	str = "CERT_ATTR_VERSION : " + TSToolkit.OutData;
+	TSToolkit.GetCertificatePropertyFromID(cert, CERT_ATTR_SERIAL_NUBMER);
+	str = str + "\r\CERT_ATTR_SERIAL_NUBMER : " + TSToolkit.OutData;
+	TSToolkit.GetCertificatePropertyFromID(cert, CERT_ATTR_SIGNATURE_ALGO_ID);
+	str = str + "\r\CERT_ATTR_SIGNATURE_ALGO_ID : " + TSToolkit.OutData;
+	TSToolkit.GetCertificatePropertyFromID(cert, CERT_ATTR_ISSUER_DN);
+	str = str + "\r\CERT_ATTR_ISSUER_DN : " + TSToolkit.OutData;
+	TSToolkit.GetCertificatePropertyFromID(cert, CERT_ATTR_SUBJECT_DN);
+	str = str + "\r\CERT_ATTR_SUBJECT_DN : " + TSToolkit.OutData;
+	TSToolkit.GetCertificatePropertyFromID(cert, CERT_ATTR_SUBJECT_PUBLICKEY_ALGO_ID);
+	str = str + "\r\CERT_ATTR_SUBJECT_PUBLICKEY_ALGO_ID : " + TSToolkit.OutData;
+	TSToolkit.GetCertificatePropertyFromID(cert, CERT_ATTR_VALID_FROM);
+	str = str + "\r\CERT_ATTR_VALID_FROM : " + TSToolkit.OutData;
+	TSToolkit.GetCertificatePropertyFromID(cert, CERT_ATTR_VALID_TO);
+	str = str + "\r\CERT_ATTR_VALID_TO : " + TSToolkit.OutData;
+	TSToolkit.GetCertificatePropertyFromID(cert, CERT_ATTR_PUBLIC_KEY);
+	str = str + "\r\CERT_ATTR_PUBLIC_KEY : " + TSToolkit.OutData;
+	TSToolkit.GetCertificatePropertyFromID(cert, CERT_ATTR_SIGNATURE);
+	str = str + "\r\CERT_ATTR_SIGNATURE : " + TSToolkit.OutData;
+	TSToolkit.GetCertificatePropertyFromID(cert, CERT_ATTR_KEY_USAGE);
+	str = str + "\r\CERT_ATTR_KEY_USAGE : " + TSToolkit.OutData;
+	TSToolkit.GetCertificatePropertyFromID(cert, CERT_ATTR_AUTORITY_KEY_ID);
+	str = str + "\r\CERT_ATTR_AUTORITY_KEY_ID : " + TSToolkit.OutData;
+	TSToolkit.GetCertificatePropertyFromID(cert, CERT_ATTR_SUBJECT_KEY_ID);
+	str = str + "\r\CERT_ATTR_SUBJECT_KEY_ID : " + TSToolkit.OutData;
+	TSToolkit.GetCertificatePropertyFromID(cert, CERT_ATTR_EXT_KEY_USAGE);
+	str = str + "\r\CERT_ATTR_EXT_KEY_USAGE : " + TSToolkit.OutData;
+	TSToolkit.GetCertificatePropertyFromID(cert, CERT_ATTR_SUBJECT_ALT_NAME);
+	str = str + "\r\CERT_ATTR_SUBJECT_ALT_NAME : " + TSToolkit.OutData;
+	TSToolkit.GetCertificatePropertyFromID(cert, CERT_ATTR_BASIC_CONSTRAINT);
+	str = str + "\r\CERT_ATTR_BASIC_CONSTRAINT : " + TSToolkit.OutData;
+	TSToolkit.GetCertificatePropertyFromID(cert, CERT_ATTR_POLICY);
+	str = str + "\r\CERT_ATTR_POLICY : " + TSToolkit.OutData;
+	TSToolkit.GetCertificatePropertyFromID(cert, CERT_ATTR_CRLDP);
+	str = str + "\r\CERT_ATTR_CRLDP : " + TSToolkit.OutData;
+	TSToolkit.GetCertificatePropertyFromID(cert, CERT_ATTR_AIA);
+	str = str + "\r\CERT_ATTR_AIA : " + TSToolkit.OutData;
+	TSToolkit.GetCertificatePropertyFromID(cert, CERT_ATTR_VALID);
+	str = str + "\r\CERT_ATTR_VALID : " + TSToolkit.OutData;
+	TSToolkit.GetCertificatePropertyFromID(cert, CERT_ATTR_SAN_REALNAME);
+	str = str + "\r\CERT_ATTR_SAN_REALNAME : " + TSToolkit.OutData;	
+	
+	alert(str);	
+	alert("Success!!");
+}
+
+-->
+</script>
+</head>
+<body bgcolor="#FFFFFF">
+<P>
+<script language="javascript" src="../../TSToolkitObject.js"></script>	
+</P>
+<form name="myform">
+
+<table border="10" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="center"><font color="#FFFFFF">== DN과 패스워드를 통한 인증서 정보확인 ==</font></td></tr>
+</table>
+<table border="10" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="left"><font color="#FFFFFF">사용자에 대한 고유이름(DN)과 패스워드를 통하여 인증서의 정보를 확인합니다.<br><br> 
+  발급 대상, 발급자 정보, 발급된 인증서의 유효기간 등 기본적인 인증서 정보 및 인증서 정책 등 보다 자세한 인증서 관련 정보를 확인할 수 있습니다.
+  </font></td></tr>
+</table>
+DN : <input type="text" name="dn" size="80" value=""><br>
+암호 : <input type="text" name="pwd" size="20" value="asdfasdf"><br>
+<input type="button" name="test" value="인증서정보" onclick="javascript:CertificateProperty(myform);">
+</form>
+</body>
+
+</html>

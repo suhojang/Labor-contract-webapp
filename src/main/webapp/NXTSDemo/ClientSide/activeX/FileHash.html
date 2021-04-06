@@ -1,0 +1,116 @@
+﻿<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<TITLE></TITLE>
+<link rel="stylesheet" href="../../tradesign2.css" type="text/css">
+<SCRIPT language=javascript src="../../TSToolkitConfig.js"></script>
+<SCRIPT language=javascript>
+<!--
+
+function HashFile(form)
+{
+	var filePath = form.filePath.value;
+	var nRet = 0;
+	var hashVal = form.hashAlgo.value;
+	var hashID;
+	
+	if(hashVal == "MD5"){
+        hashID = HASH_ID_MD5;
+    }else if(hashVal == "HAS160"){
+        hashID = HASH_ID_HAS160;
+    }else if(hashVal == "SHA1"){
+        hashID = HASH_ID_SHA1;
+    }else if(hashVal == "SHA256"){
+        hashID = HASH_ID_SHA256;
+    }else if(hashVal == "SHA384"){
+        hashID = HASH_ID_SHA384;
+    }else if(hashVal == "SHA512"){
+        hashID = HASH_ID_SHA512;
+    }else{
+    	hashID = 0;
+    }
+
+	alert(filePath);
+	nRet = TSToolkit.HashFile(hashID, filePath);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+	}
+	else
+	{
+		form.data1.value = TSToolkit.OutData;
+	}
+}
+
+-->
+</SCRIPT>
+</HEAD>
+<BODY>
+<P>
+<script language="javascript" src="../../TSToolkitObject.js"></script>	
+</P>
+
+<form name="myform">
+
+<table border="3" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="center"><font color="#FFFFFF">== 파일 Hash 값 생성==</font></td></tr>
+</table>
+<table border="3" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="left"><font color="#FFFFFF">Hash란 주어진 정보를 특정 길이의 bit로 만들어 사람들이 Hash함수의 결과로 원래의 정보를 알아 낼 수 없게 하고, 
+또한 같은 Hash value 값을 같은 두 개의 다른 정보를 찾기 어렵도록 설계된 암호학적으로 안전한 Hash함수 입니다.<br><br>
+Hashing 알고리즘은 입력된 정보의 길이에 따라 두 가지 Hashing 방법을 지원합니다.<br><br> 
+입력된 정보의 길이가 2048bit 이하 일 때는 hash()함수를 이용하여 한 번에 해시 값을 계산할 수 있는 방법과
+정보의 길이가 2048bit보다 큰 길이를 가질 때는 정보의 길이를 나누어 initialize_Hash()함수로 초기화 하고 나누워진 정보를
+process_Hash()함수로 여러 번 수행하여 마지막에 finalize_Hash()함수에 의해 해시 값을 계산하는 방법을 제공하고 있습니다.<br><br> 
+지원하는 Hash 알고리즘은 MD5, HAS160, SHA1, SHA256, SHA384, SHA512를 지원합니다. </font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== 지원 알고리즘 입력 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+	  <td align="left">
+      <select name="hashAlgo" class="blackbox">
+		      <option value="HAS160">HAS160
+		      <option value="MD5">MD5
+		      <option value="SHA1">SHA1
+		      <option value="SHA256">SHA256
+		      <option value="SHA384">SHA384
+		      <option value="SHA512">SHA512
+      </select>
+      </td>
+  </tr>
+</table>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== HASH 할 파일의 절대경로를 입력하세요 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <input type="file" name="filePath" size="65">
+    </td>
+  </tr>
+  <tr>
+    <td align="left">
+      <INPUT TYPE="button" name="button1" Value="Hash" style="width:150" onClick="HashFile(myform);" >
+    </td>
+  </tr>
+</table>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFF">== HASH된 데이타 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <textarea name="data1" rows="6" cols="80"></textarea>
+    </td>
+  </tr>
+  <tr>
+    <td align="right">
+      <INPUT TYPE="reset" name="Clear" Value="화면 지우기" style="width:150">
+    </td>
+  </tr>
+</table>
+</form>
+</BODY>
+</HTML>

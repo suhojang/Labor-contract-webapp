@@ -1,0 +1,65 @@
+﻿<!DOCTYPE HTML PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<title>Lomboz JSP</title>
+<link rel="stylesheet" href="../../tradesign2.css" type="text/css">
+<SCRIPT language=javascript src="../../TSToolkitConfig.js"></script>
+<SCRIPT language=javascript>
+<!--
+
+function GetCertFromLDAP(form)
+{
+	var nRet;
+	var certdn, storage, dn;
+
+	dn = form.dn.value;
+	
+	// 모든 Condition 설정.
+	nRet = TSToolkit.SetConfig("test", CA_LDAP_INFO, CTL_INFO, POLICIES, 
+							INC_CERT_SIGN, INC_SIGN_TIME_SIGN, INC_CRL_SIGN, INC_CONTENT_SIGN,
+							USING_CRL_CHECK, USING_ARL_CHECK);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+	// LDAP에서 인증서 가져오기.
+	nRet = TSToolkit.GetDataFromLDAP( dn, DATA_TYPE_KM_CERT); 
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	var cert;
+	cert = TSToolkit.OutData;
+	alert(cert);	
+	
+	alert("Success!!");
+}
+
+-->
+</script>
+</head>
+<body bgcolor="#FFFFFF">
+<P>
+<script language="javascript" src="../../TSToolkitObject.js"></script>	
+</P>
+<form name="myform">
+
+<table border="10" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="center"><font color="#FFFFFF">== LDAP에서 인증서 가져오기 기능 ==</font></td></tr>
+</table>
+<table border="10" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="center"><font color="#FFFFFF">LDAP에서 인증서를 가져옵니다. </font></td></tr>
+</table>
+
+<P>
+DN :
+<input type="text" name="dn" size="80" value="cn=테스트(KTNET),ou=KTNET,ou=LicensedCA,o=TradeSign,c=KR"></textarea>
+</P>
+<input type="button" name="test" value="LDAP 에서 인증서 가져오기" onclick="javascript:GetCertFromLDAP(myform);">
+</form>
+</body>
+
+</html>

@@ -1,0 +1,238 @@
+﻿<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<TITLE></TITLE>
+<link rel="stylesheet" href="../../tradesign2.css" type="text/css">
+<SCRIPT language=javascript src="../../TSToolkitConfig.js"></script>
+<SCRIPT language=javascript>
+<!--
+function Sign(form)
+{
+	var plainText, signMsg;
+	var nRet, certdn, storage;
+	
+	// 서명할 문자열 데이타 설정.
+	plainText = form.plainText.value;
+	
+	// 모든 Condition 설정.
+	nRet = TSToolkit.SetConfig("test", CA_LDAP_INFO, CTL_INFO, POLICIES, 
+							INC_CERT_SIGN, INC_SIGN_TIME_SIGN, INC_CRL_SIGN, INC_CONTENT_SIGN,
+							USING_CRL_CHECK, USING_ARL_CHECK);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+	nRet = TSToolkit.SetEachConfig("PHONE_URL", "http://test.ubikey.co.kr/infovine/1102/download.html");
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	nRet = TSToolkit.SetEachConfig("PHONE_VERSION", "1,1,0,1");
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	nRet = TSToolkit.SetEachConfig("PHONE_PARAM", "INFOVINE|http://test.ubikey.co.kr/infovine/DownloadList&KTNET|NULL");
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	// 인증서 로딩시 KM 인증서 검증 옵션 켜기
+	TSToolkit.SetEachConfig("LOAD_CERT_KM", "TRUE");
+	
+	// 사용자가 자신의 인증서를 선택. 
+	nRet = TSToolkit.SelectCertificate(STORAGE_TYPE, 0, "");
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+	nRet = TSToolkit.SignData(plainText);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	form.data1.value = TSToolkit.OutData;
+	
+	alert("Sucess!!!");
+}
+
+// 서명검증.
+function Verify(form)
+{
+	// 검증할 signedData 설정.
+	var signedData, dataMsg, signerDN;
+	var nRet;
+	
+	signedData = form.data1.value;
+
+	// 모든 Condition 설정.
+	nRet = TSToolkit.SetConfig("test", CA_LDAP_INFO, CTL_INFO, POLICIES, 
+							INC_CERT_SIGN, INC_SIGN_TIME_SIGN, INC_CRL_SIGN, INC_CONTENT_SIGN,
+							USING_CRL_CHECK, USING_ARL_CHECK);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+	nRet = TSToolkit.VerifySignedData(signedData, "");
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	// 서명된 데이타 꺼내기.
+	form.data2.value = TSToolkit.OutData;
+	
+	// 서명 갯수 꺼내기.
+	var signerIndex;
+	nRet = TSToolkit.GetSignerCount();
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	signerIndex = TSToolkit.OutDataNum;
+
+	for(i=1;i<=signerIndex;i++){
+		// 서명자 인증서 DN 꺼내기.
+		var signerDN;
+		nRet = TSToolkit.GetSignerDN(i);
+		if (nRet > 0)
+		{
+			alert(nRet + " : " + TSToolkit.GetErrorMessage());
+			return false;
+		}
+		signerDN = TSToolkit.OutData;
+		
+		// 서명자 인증서 꺼내기
+		var signerCert;
+		nRet = TSToolkit.GetSignerCert(i);
+		if (nRet > 0)
+		{
+			alert(nRet + " : " + TSToolkit.GetErrorMessage());
+			return false;
+		}
+		signerCert = TSToolkit.OutData;
+		
+		// 서명시간 꺼내기
+		var signingTime;
+		nRet = TSToolkit.GetSigningTime(i);
+		if (nRet > 0)
+		{
+			alert(nRet + " : " + TSToolkit.GetErrorMessage());
+			return false;
+		}
+		signingTime = TSToolkit.OutData;
+
+		alert(i + " 번째  : " + signerDN + "\r\n서명시간 : " + signingTime);
+		
+		// 인증서 검증하기
+		nRet = TSToolkit.CertificateValidation(signerCert);
+		if (nRet > 0)
+		{
+			alert(nRet + " : " + TSToolkit.GetErrorMessage());
+			if (nRet == 141)
+			{
+				var revokedTime;
+				revokedTime = TSToolkit.OutData;
+				alert("폐지 또는 효력정지 시각 : " + revokedTime);
+			}
+		}
+	}
+	
+	// 메모리 정리하기.
+	nRet = TSToolkit.ClearMemory();
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+	alert("Sucess!!!");
+	return true;
+}
+
+-->
+</SCRIPT>
+</HEAD>
+<BODY>
+<P>
+<script language="javascript" src="../../TSToolkitObject.js"></script>	
+</P>
+
+<form name="myform">
+
+<table border="10" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="center"><font color="#FFFFFF">== 데이터 서명/검증==</font></td></tr>
+</table>
+<table border="10" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="left"><font color="#FFFFFF">공개키 방식으로서 내용의 암호화 / 복호화에 사용되는 것이 아니라 
+  주어진 정보에 대해 어떤 특정한 사람의 개인키로 서명을 하는 함수와 다른 사람이 그 특정한 사람의 공개키로 이 주어진 정보의 서명이
+그 특정한 사람의 것인지를 알아내는 확인함수로 이루어져 있습니다.<br><br>
+알고리즘 식별자에 의해 RSA, DSA, KCDSA, ECDSA로 구분되며 각 알고리즘의 서명 값을 생성합니다.<br> 
+지원하는 알고리즘은 RSA, DSA, KCDSA, ECDSA를 지원합니다.</font></td></tr>
+</table>
+
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== 서명될 원문 데이타를 입력하세요 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <textarea name="plainText" rows="6" cols="80"></textarea>
+    </td>
+  </tr>
+  <tr>
+    <td align="left">
+      <INPUT TYPE="button" name="button1" Value="서명하기" style="width:150" onClick="Sign(myform);" >
+    </td>
+  </tr>
+</table>
+<br>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFF">== 서명된 데이타 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <textarea name="data1" rows="6" cols="80"></textarea>
+    </td>
+  </tr>
+  <tr>
+    <td align="left">
+      <INPUT TYPE="button" name="button2" Value="검증하기" style="width:150" onClick="Verify(myform);" >
+    </td>
+  </tr>
+</table>
+<br>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFF">== 서명 검증 후 나온 원문 데이타 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <textarea name="data2" rows="6" cols="80"></textarea>
+    </td>
+  </tr>
+  <tr>
+    <td align="right">
+      <INPUT TYPE="reset" name="Clear" Value="화면 지우기" style="width:150">
+    </td>
+  </tr>
+</table>
+
+</form>
+</BODY>
+</HTML>

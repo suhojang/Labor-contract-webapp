@@ -1,0 +1,132 @@
+﻿<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<TITLE></TITLE>
+<link rel="stylesheet" href="../../tradesign2.css" type="text/css">
+<SCRIPT language=javascript src="../../TSToolkitConfig.js"></script>
+<SCRIPT language=javascript>
+<!--
+function fileBase64Encode(form)
+{
+	var filePath = form.filePath.value;
+	var base64EncodeFilePath = form.base64EncodeFilePath.value;
+	
+	var nRet = 0;
+	nRet = TSToolkit.Base64EncodeFile(filePath, base64EncodeFilePath);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+	}
+	else
+	{
+		alert("Base64 Encode Success!!");
+		// Decode 테스트를 위해서 파일 경로를 복사하는 코드. 
+		form.base64EncodeFilePath1.value = base64EncodeFilePath;
+	}
+	
+}
+
+function fileBase64Decode(form)
+{
+	var base64EncodeFilePath = form.base64EncodeFilePath1.value;
+	var base64DecodeFilePath = form.base64DecodeFilePath.value;
+	
+	var nRet = 0;
+	nRet = TSToolkit.Base64DecodeFile(base64EncodeFilePath, base64DecodeFilePath);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+	}
+	else
+	{
+		alert("Base64 Decode Success!!");
+	}
+}
+-->
+</SCRIPT>
+</HEAD>
+<BODY>
+<P>
+<script language="javascript" src="../../TSToolkitObject.js"></script>	
+</P>
+
+<form name="myform">
+
+<table border="10" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="center"><font color="#FFFFFF">== 파일에 대한 Base64 Encoding / Decoding==</font></td></tr>
+</table>
+<table border="10" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="left"><font color="#FFFFFF">Base64는 64개의 문자를 이용해 바이너리 데이터를 ASCII텍스트 데이터로 표현하기위해 사용합니다.<br> 
+Base64는 특정한 문자열만 사용하여 암호화 시켜주기 때문에 데이터를 임의로 자르고 BYTE를 문자열로 넘겨주는 문제를 해결 할 수 있습니다.<br><br>
+암호화 - Base64암호화 - Base64복호화 - 복호화 과정을 통해서 제대로 된 복호화 결과를 얻어 낼 수 있습니다. </font></td></tr>
+</table>
+
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== Base64 Encode 할 파일의 절대경로를 입력하세요 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <input type="file" name="filePath" size="65">
+    </td>
+  </tr>
+  <tr>
+    <td align="left">
+	&nbsp;
+	</td>
+  </tr>
+</table>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== Base64 Encode 된 파일의 절대경로를 입력하세요 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <input type="file" name="base64EncodeFilePath" size="65">
+    </td>
+  </tr>
+  <tr>
+    <td align="left">
+      <INPUT TYPE="button" name="button1" Value="Base64 Encode File" style="width:150" onClick="fileBase64Encode(myform);" > 
+    </td>
+  </tr>
+</table>
+<br>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== Base64 Encode 된 파일의 절대경로를 입력하세요 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <input type="file" name="base64EncodeFilePath1" size="65">
+    </td>
+  </tr>
+  <tr>
+    <td align="left">
+	&nbsp;
+	</td>
+  </tr>
+</table>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== Base64 Decode 된 파일의 절대경로를 입력하세요 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <input type="file" name="base64DecodeFilePath" size="65">
+    </td>
+  </tr>
+  <tr>
+    <td align="left">
+      <INPUT TYPE="button" name="button2" Value="Base64 Decode File" style="width:150" onClick="fileBase64Decode(myform);" >
+    </td>
+  </tr>
+  <tr>
+    <td align="right">
+      <INPUT TYPE="reset" name="Clear" Value="화면 지우기" style="width:150">
+    </td>
+  </tr>
+</table>
+</form>
+</BODY>
+</HTML>

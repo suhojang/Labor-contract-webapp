@@ -1,0 +1,23 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><%@ 
+ taglib prefix="form" uri="http://www.springframework.org/tags/form"%><%@
+ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%><%@ 
+ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%><%@
+ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%><%@ 
+ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %><%@ 
+ taglib prefix="spring" uri="http://www.springframework.org/tags"%><%
+	String ROOT_PATH	= "/";
+	String IMG_PATH		= ROOT_PATH+"bootstrap/img/";
+	String CSS_PATH		= ROOT_PATH+"bootstrap/css/";
+	String JS_PATH		= ROOT_PATH+"js/";
+	
+	String _AGENT		= (String)request.getHeader("User-Agent");
+	String[] _MOBILE	= {"iPhone","iPad","Android","BlackBerry","Windows CE",
+							"Nokia","Webos","Opera Mini","SonyEricsson","Opera Mobi","IEMobile"};
+	String _OS	= "PC";
+	for(int i=0;i<_MOBILE.length;i++){
+		if(_AGENT.indexOf(_MOBILE[i])>=0){
+			_OS	= "MOBLIE";
+			break;
+		}
+	}
+%>

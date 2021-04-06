@@ -1,0 +1,185 @@
+﻿<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<TITLE></TITLE>
+<link rel="stylesheet" href="../../tradesign2.css" type="text/css">
+<SCRIPT language=javascript src="../../TSToolkitConfig.js"></script>
+<SCRIPT language=javascript>
+<!--
+
+function Envelop(form)
+{
+	var nRet, secret, envelopedData;
+	var plainText, keyPwd;
+	plainText = form.plainText.value;
+	
+	// 모든 Condition 설정.
+	nRet = TSToolkit.SetConfig("test", CA_LDAP_INFO, CTL_INFO, POLICIES, 
+							INC_CERT_SIGN, INC_SIGN_TIME_SIGN, INC_CRL_SIGN, INC_CONTENT_SIGN,
+							USING_CRL_CHECK, USING_ARL_CHECK);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	nRet = TSToolkit.SetEncryptionAlgoAndMode(SYMMETRIC_ID_SEED, SYMMETRIC_MODE_CBC); 
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+	nRet = TSToolkit.SetPeerCertificate(pemKMCert); 
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	nRet = TSToolkit.EnvelopData(plainText); 
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	form.data1.value = TSToolkit.OutData;
+	alert("Envelop Success!!");
+	
+	return true;
+}
+function Develop(form)
+{
+	var nRet, secret, data;
+	var certdn, storage;
+	// 복호화할 데이타 설정하기.
+	var envelopedData, keyPwd;
+	envelopedData = form.data1.value;
+	
+	// 모든 Condition 설정.
+	nRet = TSToolkit.SetConfig("test", CA_LDAP_INFO, CTL_INFO, POLICIES, 
+							INC_CERT_SIGN, INC_SIGN_TIME_SIGN, INC_CRL_SIGN, INC_CONTENT_SIGN,
+							USING_CRL_CHECK, USING_ARL_CHECK);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	nRet = TSToolkit.SetEncryptionAlgoAndMode(SYMMETRIC_ID_SEED, SYMMETRIC_MODE_CBC); 
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	nRet = TSToolkit.LoadCertificate(DATA_TYPE_PEM, pemSignCert, pemSignKey, pemKMCert, pemKMKey, "asdfasdf");
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	nRet = TSToolkit.DecryptEnvelopedData(envelopedData);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	envelopVerifyMsg = TSToolkit.OutData;
+	
+	form.data2.value = envelopVerifyMsg;
+	
+	alert("Develop Success!!");
+	return true;
+}
+-->
+</SCRIPT>
+</HEAD>
+<BODY>
+<P>
+<script language="javascript" src="../../TSToolkitObject.js"></script>	
+</P>
+
+<form name="myform">
+
+<table border="10" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="center"><font color="#FFFFFF">== 데이터에 대한 전자봉투 생성 및 해독 ==</font></td></tr>
+</table>
+<table border="10" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="left"><font color="#FFFFFF">특정인에게 문서를 암호화 하여 보낼 때, 비밀키 암호와 공개키 암호를 함께 사용할 경우를 생각해 볼 수 있습니다. 
+이 방식은 공개키 암호의 장점과 비밀키 암호의 장점을 동시에 수용하기 위한 방식입니다. <br><br>
+공개키 암호만을 사용하여 암호화 할 경우, 상대방의 키를 알기 쉽다는 장점을 갖으나 처리 속도가 늦으므로 큰 문서의 암호화에는 사용하기가 부적절합니다.
+반면 비밀키 암호 알고리즘만을 사용하여 암호화 할 경우에는 키를 아는 것이 어렵다는 단점이 있습니다.<br> 
+이러한 문제를 막기 위하여 전자 봉투(digital envelope) 방식이 많이 사용됩니다. <br><br>
+전자 봉투 방식은 비밀키 암호 알고리즘을 사용하여 보내고자 하는 메시지를 암호화 한 후,
+비밀키 암호 알고리즘의 키를 상대방의 공개키로 암호화 하는 방식입니다. 
+일반적으로 비밀키 암호 알고리즘의 키의 길이는 상대적으로 작으므로 공개키 암호 알고리즘 연산은 쉽게 처리될 수 있습니다.<br><br> 
+이 방식을 사용하여 문서를 암호화 하는 과정은 다음의 순서로 진행됩니다.<br>
+(응용 프로그램의 종류에 따라서 순서는 부분적으로 바뀔 수 있지만 기본 내용은 같습니다).<br><br>
+
+송신자의 동작 순서 : <br>
+					ㅁStep 1 수신자의 공개키를 얻습니다 <br>
+					ㅁStep 2 문서를 암호화 할 비밀키 암호 알고리즘을 선택하고, 난수 발생기를 이용하여 키를 생성<br>
+					ㅁStep 3 생성된 키를 이용하여 문서를 암호화 합니다. <br>
+					ㅁStep 4 수신자의 공개키(암호화 키)를 사용하여 비밀키 암호 알고리즘의 키를 암호화 합니다.<br> 
+					ㅁStep 5 공개키 암호 알고리즘을 사용하여 암호화 한 키와 비밀키 암호 알고리즘을 사용하여 암호화 한 문서를 수신자에게 보냅니다.<br><br> 
+
+수신자의 동작 순서 : <br>
+ㅁStep 1 자신의 개인키(복호화 키)를 사용하여 비밀키 암호 알고리즘의 키를 얻습니다.<br>
+ㅁStep 2 step 1에서 얻은 키를 사용하여 암호화 된 문서를 복호화 합니다. <br>
+</font></td></tr>
+</table>
+
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== Envelop 될 원문 데이타를 입력하세요 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <textarea name="plainText" rows="6" cols="80"></textarea>
+    </td>
+  </tr>
+  <tr>
+    <td align="left">
+      <INPUT TYPE="button" name="button1" Value="Envelop 하기" style="width:150" onClick="Envelop(myform);" >
+    </td>
+  </tr>
+</table>
+<br>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFF">== EnvelopedData ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <textarea name="data1" rows="6" cols="80"></textarea>
+    </td>
+  </tr>
+  <tr>
+    <td align="left">
+      <INPUT TYPE="button" name="button6" Value="Develop" style="width:150" onClick="Develop(myform);" >
+    </td>
+  </tr>
+</table>
+<br>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFF">== Develop 후 나온 원문데이타 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <textarea name="data2" rows="6" cols="80"></textarea>
+    </td>
+  </tr>
+  <tr>
+    <td align="right">
+      <INPUT TYPE="reset" name="Clear" Value="화면 지우기" style="width:150">
+    </td>
+  </tr>
+</table>
+</form>
+</BODY>
+</HTML>

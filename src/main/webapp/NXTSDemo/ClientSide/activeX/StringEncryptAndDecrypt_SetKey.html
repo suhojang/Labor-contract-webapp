@@ -1,0 +1,190 @@
+﻿<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<TITLE></TITLE>
+<link rel="stylesheet" href="../../tradesign2.css" type="text/css">
+<SCRIPT language=javascript src="../../TSToolkitConfig.js"></script>
+<SCRIPT language=javascript>
+<!--
+function Encrypt(form)
+{
+	var nRet, secret, encryptedData;
+	var plainText;
+	plainText = form.plainText.value;
+	
+	nRet = TSToolkit.SetEncryptionAlgoAndMode(SYMMETRIC_ID_3DES, SYMMETRIC_MODE_CBC); 
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	// 대칭키 생성
+	var sessionKey, sessionIV;
+
+	sessionKey = form.sessionKey.value;
+	sessionIV = form.sessionIV.value;
+	
+	nRet = TSToolkit.SetSymmetricKeyAndIV( sessionKey, sessionIV );
+	if ( nRet > 0 )
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	nRet = TSToolkit.EncryptData(plainText, sessionKey); 
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	form.data1.value = TSToolkit.OutData;
+	alert("Success!!");
+	return true;
+}
+
+function Decrypt(form)
+{
+	var nRet, secret, data;
+	// 복호화할 데이타 설정하기.
+	var encryptedData;
+	encryptedData = form.data1.value;
+	
+	nRet = TSToolkit.SetEncryptionAlgoAndMode(SYMMETRIC_ID_3DES, SYMMETRIC_MODE_CBC); 
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+	var sessionKey, sessionIV;
+
+	sessionKey = form.sessionKey.value;
+	sessionIV = form.sessionIV.value;
+	
+	nRet = TSToolkit.SetSymmetricKeyAndIV( sessionKey, sessionIV );
+	if ( nRet > 0 )
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+ 	
+	nRet = TSToolkit.DecryptData(encryptedData, sessionKey); 
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+	form.data2.value = TSToolkit.OutData;
+	alert("Success!!");
+	
+	return true;
+}
+
+function getAlgoAndMode ()
+{
+	// 셋팅된 Encryption 알고리즘 과 모드 확인.
+	var nEncryptionAlgorithm, nEncryptionMode;
+	nRet = TSToolkit.GetEncryptionAlgorithm(); 
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	nEncryptionAlgorithm = TSToolkit.OutDataNum;
+	nRet = TSToolkit.GetEncryptionMode(); 
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	nEncryptionMode = TSToolkit.OutDataNum;
+	alert ("Encryption Algorithm : " + nEncryptionAlgorithm + "\r\nEncryption Mode : " + nEncryptionMode);
+}
+-->
+</SCRIPT>
+</HEAD>
+<BODY>
+<P>
+<script language="javascript" src="../../TSToolkitObject.js"></script>	
+</P>
+
+<form name="myform">
+
+<table border="10" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="center"><font color="#FFFFFF">== 대칭키 설정 암호/복호==</font></td></tr>
+</table>
+<table border="10" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="left"><font color="#FFFFFF">Symmetric key 암호화 알고리즘은 암호화 하고자 하는 정보를 어떤 특정한 내용의 키로 암호화를 하면
+그 결과인 암호문을 복호화 하기 위해서는 다시 그 특정한 내용의 키를 사용해야 복호화를 되는 것을 말합니다.<br><br>
+대칭키 설정 암호/복호는 외부에서 생성 또는 사용한 대칭키와 초기벡터(IV)를 설정하여 사용합니다.<br>
+일반적으로 문서의 내용을 암호화하는데에 사용됩니다. 
+모듈에서는 대칭키 암호화는 알고리즘과 Operation Mode에 의해 각 알고리즘을 수행합니다.<br><br>
+Operation Mode에는 ECB, CBC, CFB, OFB, CTR을 지원합니다.  <br>
+지원하는 알고리즘은 Block 암호화 방식의 DES, 3DES, SEED, BLOWFISH, AES, ARIA와<br> Stream 암호화 방식의 RC4를 지원합니다. </font></td></tr>
+</table>
+
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== 대칭키 & IV ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <input type="text" name="sessionKey" size="40"><input type="text" name="sessionIV" size="40">
+    </td>
+  </tr>
+</table>
+<br>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== Encrypt 될 원문 데이타를 입력하세요 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <textarea name="plainText" rows="6" cols="80"></textarea>
+    </td>
+  </tr>
+  <tr>
+    <td align="left">
+      <INPUT TYPE="button" name="button3" Value="Encrypt 하기" style="width:150" onClick="Encrypt(myform);" >
+    </td>
+  </tr>
+</table>
+<br>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFF">== EncryptedData ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <textarea name="data1" rows="6" cols="80"></textarea>
+    </td>
+  </tr>
+  <tr>
+    <td align="left">
+      <INPUT TYPE="button" name="button4" Value="Decrypt" style="width:150" onClick="Decrypt(myform);" >
+    </td>
+  </tr>
+</table>
+<br>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFF">== Decrypt 후 나온 원문데이타 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <textarea name="data2" rows="6" cols="80"></textarea>
+    </td>
+  </tr>
+  <tr>
+    <td align="right">
+      <INPUT TYPE="button" name="button2" Value="알고리즘 확인" style="width:150" onClick="getAlgoAndMode();" >
+      <INPUT TYPE="reset" name="Clear" Value="화면 지우기" style="width:150">
+    </td>
+  </tr>
+</table>
+</form>
+</BODY>
+</HTML>

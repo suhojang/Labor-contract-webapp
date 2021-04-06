@@ -1,0 +1,202 @@
+<html>
+<link rel="stylesheet" href="tradesign2.css" type="text/css">
+<head>
+<SCRIPT language=JavaScript type=text/JavaScript>
+<!--
+function change1(form) 
+{
+  if(form.url.options[form.url.selectedIndex].value != "")
+  {
+    window.open(form.url.options[form.url.selectedIndex].value, "Demo")
+  }
+}
+//-->
+</SCRIPT> 
+</head>
+<body>
+<table ID="Table1">
+  <tr>
+
+    <td>
+      <form name="linkform1">
+      <table border="1" width="220" cellpadding="1" cellspacing="0" bordercolor="#A6CAF0" bgcolor="#FFFFFF"">
+      <tr>
+        <td align="center">
+	      <table border="0" width="220" cellpadding="3" cellspacing="0" bgcolor="#A6CAF0">
+	      <tr>
+	        <td align="center">
+	          <font color="#FFFFFF"><b>Client 모듈 테스트(Java)</b></font><br>(모든 기능을 Client 에서)
+	        </td>
+	      </tr>
+	      <tr>
+	        <td align="center">
+	          <select onChange="change1(this.form)" name="url" class="form">
+	          <option selected>-- Client 환경에서만 진행 --</option>
+	          <option value="ClientSide/java/StringSignVerify.html">서명 및 검증(PKCS#7)</option>
+	          <option value="ClientSide/java/FileSignVerify.html">파일서명 및 검증(PKCS#7)</option>
+	          <option value="ClientSide/java/StringAddSignVerify.html">추가 서명 및 검증(PKCS#7)</option>
+	          <option value="ClientSide/java/FileAddSignVerify.html">파일 추가 서명 및 검증(PKCS#7)</option>
+	          <option value="ClientSide/java/GenSignatureVerify.html">서명값 생성 및 검증</option>
+	          <option value="ClientSide/java/StringEnvelopAndEnvelopVerify.html">전자봉투 생성 및개봉</option>
+	          <option value="ClientSide/java/FileEnvelopAndEnvelopVerify.html">파일 전자봉투 생성 개봉</option>
+	          <option value="ClientSide/java/StringEncryptAndDecrypt_GenKey.html">암호 및 복호 (키생성)</option>
+	          <option value="ClientSide/java/StringEncryptAndDecrypt_SetKey.html">암호 및 복호 (키설정)</option>
+	          <option value="ClientSide/java/FileEncryptAndDecrypt.html">파일 암호 및 복호</option>
+	          <option value="ClientSide/java/StringHash.html">Hash 값 생성</option>
+	          <option value="ClientSide/java/FileHash.html">파일 Hash 값 생성</option>
+	          <option value="ClientSide/java/StringBase64.html">Base64 Encode/Decode</option>
+	          <option value="ClientSide/java/FileBase64.html">파일 Base64 Encode/Decode</option>
+	          <option value="ClientSide/java/GenRandom.html">난수 생성</option>
+	          <option value="ClientSide/java/CertProperty.html">인증서 정보</option>
+	          <option value="ClientSide/java/CertVerify.html">인증서 검증</option>
+	          <option value="ClientSide/java/CheckVID.html">인증서 신원확인</option>
+	          <option value="ClientSide/java/GetCertificateSet.html">인증서와 개인키 꺼내기</option>
+	          <option value="ClientSide/java/GetRandomInKey.html">개인키 내의 난수 얻기</option>
+	          <option value="ClientSide/java/GetCertFromLDAP.html">LDAP 에서 인증서 가져오기</option>
+	          <option value="ClientSide/java/CertPropertyWithDnAndPwd.html">DN과 패스워드로 인증서 정보 보기</option>
+	          <option value="ClientSide/java/ChangeBanner.html">Banner 변경</option>
+	          <option value="ClientSide/java/LoginProcess.html">로그인</option>
+<!--	          <option value="ClientSide/java/OCSPTest.html">OCSP Test</option>
+	          <option value="ClientSide/java/TSATest.html">TSA Test</option>
+-->
+	        </td>
+	      </tr>
+	      </table>
+        </td>
+      </tr>
+      </table>
+      </form>
+    </td>
+    <td>
+      <form name="linkform1" ID="Form1">
+      <table border="1" width="220" cellpadding="1" cellspacing="0" bordercolor="#A6CAF0" bgcolor="#FFFFFF" ID="Table2">
+      <tr>
+        <td align="center">
+	      <table border="0" width="220" cellpadding="3" cellspacing="0" bgcolor="#A6CAF0">
+	      <tr>
+	        <td align="center">
+	          <font color="#FFFFFF"><b>Client 모듈 테스트(ActiveX)</b></font><br>(모든 기능을 Client 에서)
+	        </td>
+	      </tr>
+	      <tr>
+	        <td align="center">
+	          <select onChange="change1(this.form)" name="url" class="form" ID="Select1">
+	          <option selected>-- Client 환경에서만 진행 --</option>
+	          <option value="ClientSide/activeX/StringSignVerify.html">서명 및 검증(PKCS#7)</option>
+	          <option value="ClientSide/activeX/FileSignVerify.html">파일서명 및 검증(PKCS#7)</option>
+	          <option value="ClientSide/activeX/StringAddSignVerify.html">추가 서명 및 검증(PKCS#7)</option>
+	          <option value="ClientSide/activeX/FileAddSignVerify.html">파일 추가 서명 및 검증(PKCS#7)</option>
+	          <option value="ClientSide/activeX/GenSignatureVerify.html">서명값 생성 및 검증</option>
+	          <option value="ClientSide/activeX/StringEnvelopAndEnvelopVerify.html">전자봉투 생성 및개봉</option>
+	          <option value="ClientSide/activeX/FileEnvelopAndEnvelopVerify.html">파일 전자봉투 생성 개봉</option>
+	          <option value="ClientSide/activeX/StringEncryptAndDecrypt_GenKey.html">암호 및 복호 (키생성)</option>
+			  <option value="ClientSide/activeX/StringEncryptAndDecrypt_SetKey.html">암호 및 복호 (키설정)</option>
+	          <option value="ClientSide/activeX/FileEncryptAndDecrypt.html">파일 암호 및 복호</option>
+	          <option value="ClientSide/activeX/StringHash.html">Hash 값 생성</option>
+	          <option value="ClientSide/activeX/FileHash.html">파일 Hash 값 생성</option>
+	          <option value="ClientSide/activeX/StringBase64.html">Base64 Encode/Decode</option>
+	          <option value="ClientSide/activeX/FileBase64.html">파일 Base64 Encode/Decode</option>
+	          <option value="ClientSide/activeX/GenRandom.html">난수 생성</option>
+	          <option value="ClientSide/activeX/CertProperty.html">인증서 정보</option>
+	          <option value="ClientSide/activeX/CertVerify.html">인증서 검증</option>
+	          <option value="ClientSide/activeX/CheckVID.html">인증서 신원확인</option>
+	          <option value="ClientSide/activeX/GetCertificateSet.html">인증서와 개인키 꺼내기</option>
+	          <option value="ClientSide/activeX/GetRandomInKey.html">개인키 내의 난수 얻기</option>
+	          <option value="ClientSide/activeX/GetCertFromLDAP.html">LDAP 에서 인증서 가져오기</option>
+	          <option value="ClientSide/activeX/CertPropertyWithDnAndPwd.html">DN과 패스워드로 인증서 정보 보기</option>
+	          <option value="ClientSide/activeX/ChangeBanner.html">Banner 변경</option>
+	          <option value="ClientSide/activeX/LoginProcess.html">로그인</option>
+<!--	      
+			  <option value="ClientSide/activeX/OCSPTest.html">OCSP Test</option>
+	          <option value="ClientSide/activeX/TSATest.html">TSA Test</option>
+-->
+	        </td>
+	      </tr>
+	      </table>
+        </td>
+      </tr>
+      </table>
+      </form>
+    </td>
+    <td>
+      <form name="linkform2" ID="Form2">
+      <table border="1" width="220" cellpadding="1" cellspacing="0" bordercolor="#A6CAF0" bgcolor="#FFFFFF" ID="Table3">
+      <tr>
+        <td align="center">
+	      <table border="0" width="220" cellpadding="3" cellspacing="0" bgcolor="#A6CAF0">
+	      <tr>
+	        <td align="center">
+	          <font color="#FFFFFF"><b>Client/Server 연동테스트</b></font><br>(모든 기능을 C/S 에서 연동으로)
+	        </td>
+	      </tr>
+	      <tr>
+	        <td align="center">
+	          <select onChange="change1(this.form)" name="url" class="form" ID="Select2">
+	          <option selected="selected">- Client/Server -</option>
+	          <option value>----- ActiveX/Java-----</option>
+	          <option value="CSSide/activeX/DemoSign.jsp">서명 및 검증</option>
+	          <option value="CSSide/activeX/DemoEnvelop.jsp">전자봉투 생성 및 개봉</option>
+	          <option value="CSSide/activeX/DemoLogin.jsp">로그인</option>
+	          <option value>----- ActiveX/.NET-----</option>
+	          <option value="CSSide/activeX/DemoSign.aspx">서명 및 검증</option>
+	          <option value="CSSide/activeX/DemoEnvelop.aspx">전자봉투 생성 및 개봉</option>
+	          <option value="CSSide/activeX/DemoLogin.aspx">로그인</option>
+                  <option value="CSSide/activeX/DemoEncryptAndDecrypt.aspx">암호 및 복호</option>
+                  <option value="CSSide/activeX/DemoAddsign.aspx">다중서명 및 검증</option>
+	        </td>
+	      </tr>
+	      </table>
+        </td>
+      </tr>
+      </table>
+      </form>
+    </td>
+    <td>
+      <form name="linkform3" ID="Form3">
+      <table border="1" width="220" cellpadding="1" cellspacing="0" bordercolor="#A6CAF0" bgcolor="#FFFFFF" ID="Table4">
+      <tr>
+        <td align="center">
+	      <table border="0" width="220" cellpadding="3" cellspacing="0" bgcolor="#A6CAF0">
+	      <tr>
+	        <td align="center">
+	         <font color="#FFFFFF"><b>Server 모듈 테스트</b></font><br>(모든 기능을 서버에서 수행)
+	        </td>
+	      </tr>
+	      <tr>
+	        <td align="center">
+	          <select onChange="change1(this.form)" name="url" class="form" ID="Select3">
+	          <option selected>-- Server 환경에서만 진행 --</option>
+	          <option value>----- Java -----</option>
+	          <option value="ServerSide/StringSignVerify.html">서명 및 검증</option>
+	          <option value="ServerSide/StringSignVerifyAndCertVerify.html">서명 및 검증 & 인증서검증</option>
+	          <option value="ServerSide/StringEnvelopAndEnvelopVerify.html">전자봉투 생성 및개봉</option>
+	          <option value="ServerSide/StringHash.html">Hash 값 생성</option>
+	          <option value="ServerSide/StringBase64.html">Base64 Encode/Decode</option>
+	          <option value="ServerSide/x509validate.html">인증서 검증</option>
+	          <option value="ServerSide/x509info.html">인증서 정보</option>
+	          <option value>----- .NET -----</option>
+                  <option value="ServerSide/StringSignVerify.aspx">서명 및 검증</option>
+                  <option value="ServerSide/FileSignVerify.aspx">파일서명 및 검증</option>
+                  <option value="ServerSide/StringEnvelopAndEnvelopVerify.aspx">전자봉투 생성 및개봉</option>
+                  <option value="ServerSide/FileEnvelopAndEnvelopVerify.aspx">파일 전자봉투 생성 개봉</option>
+                  <option value="ServerSide/StringEncryptAndDecrypt.aspx">암호 및 복호</option>
+                  <option value="ServerSide/FileEncryptAndDecrypt.aspx">파일 암호 및 복호</option>
+                  <option value="ServerSide/StringHash.aspx">Hash 값 생성</option>
+                  <option value="ServerSide/FileHash.aspx">파일 Hash 값 생성</option>
+                  <option value="ServerSide/StringBase64.aspx">Base64 Encode/Decode</option>
+                  <option value="ServerSide/FileBase64.aspx">파일 Base64 Encode/Decode</option>
+                  <option value="ServerSide/CheckVID.aspx">인증서 신원확인</option>
+                  <option value="ServerSide/CertVerify.aspx">인증서 검증</option>
+                  <option value="ServerSide/CertProperty.aspx">인증서 정보</option>
+	        </td>
+	      </tr>
+	      </table>
+        </td>
+      </tr>
+      </table>
+      </form>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

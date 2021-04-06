@@ -1,0 +1,116 @@
+﻿<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<TITLE></TITLE>
+<link rel="stylesheet" href="../../common.css" type="text/css">
+<!--<link rel="stylesheet" href="../../tradesign2.css" type="text/css">-->
+<SCRIPT language=javascript src="../../eventFunc.js"></script>
+<SCRIPT language=javascript src="../../TSToolkitConfig.js"></script>
+<SCRIPT language=javascript>
+<!--
+function Base64Encode(form)
+{
+	var data = form.data.value;
+	var nRet = 0;
+	var base64Data;
+	nRet = TSToolkit.Base64EncodeData(data);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+	}
+	else
+	{
+		form.data1.value = TSToolkit.OutData;
+	}
+}
+
+function Base64Decode(form)
+{
+	var base64Data = form.data1.value;
+	var nRet = 0;
+	var data;
+	nRet = TSToolkit.Base64DecodeData(base64Data);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+	}
+	else
+	{
+		form.data2.value = TSToolkit.OutData;
+	}
+}
+
+-->
+</SCRIPT>
+</HEAD>
+<BODY>
+<P>
+<script language="javascript" src="../../TSToolkitObject.js"></script>	
+</P>
+
+<form name="myform">
+
+<img src="../../images/view1.gif" id="tab1" onclick="javascript:justTab(2, 1, 3);"><img src="../../images/view2.gif" id="tab2" onclick="javascript:justTab(3, 1, 3);"><br>
+<table border="0" cellpadding="0" cellspacing="0" id="txt1" style="display:block;" width="700" class="tabbox">
+<tr> 
+  <td width="2%" valign="top" rowspan="2"><img src="../../images/arrow_01.gif" width="8" height="13"></td>
+  <td width="596"><p class="txtmargin5">각 탭을 선택하세요.</td>
+</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" id="txt2" style="display:none;" width="700" class="tabbox">
+<tr> 
+  <td width="1%" rowspan="2" valign="top"><img src="../../images/square_01.gif"></td>
+  <td width="99%"><p class="bold">Base64<br></td>
+</tr>
+<tr>
+  <td width="99%">
+    <table border="0" cellpadding="3" cellspacing="1" class="cellback" width="90%">
+    <tr> 
+      <td width="17%" class="celltop" align="center"><p>Base64</p></td>
+      <td class="celllight"><img src="../../images/arrow_01.gif"> 64개의 문자를 이용해 바이너리 데이터를 ASCII텍스트 데이터로 표현하기위해 사용<br>
+      <img src="../../images/arrow_01.gif"> 특정한 문자열만 사용하여 암호화 시켜주기 때문에 데이터를 임의로 자르고 BYTE를<br>
+      &nbsp;&nbsp; 문자열로 넘겨주는 문제 해결 가능</td>
+    </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" id="txt3" style="display:none;" width="700" class="tabbox">
+<tr> 
+  <td width="1%" rowspan="2" valign="top"><img src="../../images/square_01.gif"></td>
+  <td width="99%"><p class="bold">Base64 Encoding/Decoding</td>
+</tr>
+<tr> 
+  <td>
+    <table border="0" cellpadding="3" cellspacing="1" class="cellback" width="95%">
+    <tr> 
+      <td class="celltop" width="17%" align="center"><p>1. Encoding 할 데이타 입력</p></td>
+      <td class="celllight3"><textarea name="data" rows="6" cols="80"></textarea></td>
+    </tr>
+    <tr> 
+      <td width="17%" class="celltop" align="center"><p>2. Base64 Encoding 실행</p></td>
+      <td class="celllight3"><INPUT TYPE="button" name="button1" Value="Base64 Encoding" style="width:150" onClick="Base64Encode(myform);" ></td>
+    </tr>
+    <tr> 
+      <td width="17%" class="celltop" align="center"><p>3. Base64 Encoding된<br> 데이타</p></td>
+      <td class="celllight3"><textarea name="data1" rows="6" cols="80"></textarea></td>
+    </tr>
+    <tr> 
+      <td width="17%" class="celltop" align="center"><p>4. Base64 Decoding 실행</p></td>
+      <td class="celllight3"><INPUT TYPE="button" name="button2" Value="Base64 Decoding" style="width:150" onClick="Base64Decode(myform);" ></td>
+    </tr>
+    <tr> 
+      <td width="17%" class="celltop" align="center"><p>5. Base64 Decoding된<br> 데이터</p></td>
+      <td class="celllight3"><textarea name="data2" rows="6" cols="80"></textarea></td>
+    </tr>
+    <tr> 
+      <td class="celllight3" align="right" colspan="2"><INPUT TYPE="reset" name="Clear" Value="화면 지우기" style="width:150"></td>
+    </tr>
+    </table>
+  </td>
+</tr>
+</table>
+
+</form>
+</BODY>
+</HTML>

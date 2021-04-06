@@ -1,0 +1,277 @@
+﻿<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<TITLE></TITLE>
+<link rel="stylesheet" href="../../tradesign2.css" type="text/css">
+<SCRIPT language=javascript src="../../TSToolkitConfig.js"></script>
+<SCRIPT language=javascript>
+<!--
+function CheckIDN(form)
+{
+	var nRet, certdn, storage;
+	var ssn;
+	ssn = form.ssn.value;
+	
+	// 사용자가 자신의 인증서를 선택. 
+	// 인증서 검증할 인증서 꺼내오기 위해서만 사용.
+	var loginConf;
+	var myCertDirPath, myCert, myPriKeyInfo;
+	
+	// 모든 Condition 설정.
+	nRet = TSToolkit.SetConfig("test2", CA_LDAP_INFO, CTL_INFO, POLICIES, 
+							INC_CERT_SIGN, INC_SIGN_TIME_SIGN, INC_CRL_SIGN, INC_CONTENT_SIGN,
+							USING_CRL_CHECK, USING_ARL_CHECK);
+	
+	// 배너 이미지 링크 설정. 이부분이 없으면 기본 이미지 사용.
+//	nRet = TSToolkit.SetEachConfig("BANNER_URL", "203.242.136.107/cert/tradesign.bmp");
+//	if (nRet > 0)
+//	{
+//		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+//		return false;
+//	}
+	
+	// 인증서 로딩시 KM 인증서 검증 옵션 켜기
+	TSToolkit.SetEachConfig("LOAD_CERT_KM", "TRUE");
+	
+	// 사용자가 자신의 인증서를 선택. 
+	nRet = TSToolkit.SelectCertificate(STORAGE_TYPE, 0, "");
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+	nRet = TSToolkit.VerifyVID(ssn);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	 
+	if (TSToolkit.OutData != "true")
+	{
+		alert("신원확인불일치");
+		return false;
+	}
+	
+	alert("Success!!");
+
+}
+function CheckIDN2(form)
+{
+	var nRet, certdn, storage;
+	var ssn;
+	ssn = form.ssn.value;
+	
+	// 사용자가 자신의 인증서를 선택. 
+	// 인증서 검증할 인증서 꺼내오기 위해서만 사용.
+	var loginConf;
+	var myCertDirPath, myCert, myPriKeyInfo;
+	
+	// 모든 Condition 설정.
+	nRet = TSToolkit.SetConfig("test", CA_LDAP_INFO, CTL_INFO, POLICIES, 
+							INC_CERT_SIGN, INC_SIGN_TIME_SIGN, INC_CRL_SIGN, INC_CONTENT_SIGN,
+							USING_CRL_CHECK, USING_ARL_CHECK);
+
+	// 인증서 로딩시 KM 인증서 검증 옵션 켜기
+	TSToolkit.SetEachConfig("LOAD_CERT_KM", "TRUE");
+	
+	// 사용자가 자신의 인증서를 선택. 
+	nRet = TSToolkit.SelectCertificate(STORAGE_TYPE, 0, "");
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	// 인증서 꺼내기.
+	nRet = TSToolkit.GetCertificate(CERT_TYPE_SIGN, DATA_TYPE_PEM);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	signcert = TSToolkit.OutData;
+	
+	// 인증서 꺼내기.
+	nRet = TSToolkit.GetRandomInKey();
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	random = TSToolkit.OutData;
+
+	nRet = TSToolkit.VerifyVID2(signcert, ssn, random);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	 
+	if (TSToolkit.OutData != "true")
+	{
+		alert("신원확인불일치");
+		return false;
+	}
+	
+	alert("Success!!");
+
+}
+
+function insertLFtoPEMCert( strCert )
+{
+	if ( strCert == null || strCert == "" )
+	{
+		setErrorCode("NO_DATA_VALUE");
+		setErrorMessage( "" );
+		setErrorFunctionName( "insertLFtoPEMCert()" );
+		return "";
+	}
+
+	var pemHeader	= "-----BEGIN CERTIFICATE-----";
+	var pemTrailer	= "-----END CERTIFICATE-----";
+	var buf = removeCRLF( strCert );
+
+	var i = 0;
+	var nCount = 0;
+	for ( i = 0; i < pemHeader.length; i++ )
+	{
+		if ( pemHeader.charAt( i ) == buf.charAt( i ) )
+		{
+			nCount = nCount + 1;
+		}
+	}
+	if  ( nCount != pemHeader.length )
+	{
+		setErrorCode("NOT_PEM_CERT");
+		setErrorMessage( "" );
+		setErrorFunctionName( "insertLFtoPEMCert()" );
+		return "";
+	}
+
+	nCount = 0;
+	for ( i = 0; i < pemTrailer.length; i++ )
+	{
+		if ( pemTrailer.charAt( i ) == buf.charAt( buf.length - pemTrailer.length + i ) )
+		{
+			nCount = nCount + 1;
+		}
+	}
+	if  ( nCount != pemTrailer.length )
+	{
+		setErrorCode("NOT_PEM_CERT");
+		setErrorMessage( "" );
+		setErrorFunctionName( "insertLFtoPEMCert()" );
+		return "";
+	}
+
+	var strPEMCert = "";
+	nCount = 0;
+	for ( i = 0; i < buf.length - pemHeader.length - pemTrailer.length; i++ )
+	{
+		strPEMCert += buf.charAt( i + pemHeader.length );
+		nCount = nCount + 1;
+		if ( nCount == 64 )
+		{
+			strPEMCert += '\n';
+			nCount = 0;
+		}
+	}
+
+	strPEMCert = pemHeader + "\n" + strPEMCert + "\n" + pemTrailer;
+	strPEMCert = strPEMCert;
+	
+	return strPEMCert;
+}
+function removeCRLF( str )
+{
+	var i = 0;
+	var buf = "";
+	for( i = 0; i < str.length; i++ )
+	{
+		if ( str.charAt(i) != '\n' && str.charAt(i) != '\r' )
+		{
+			buf += str.charAt(i);
+		}
+	}
+	return buf;
+}
+function insertLFtoPEMCert2( strCert )
+{
+	var buf = removeCRLF( strCert );
+	var pemHeader	= "-----BEGIN CERTIFICATE-----";
+	var pemTrailer	= "-----END CERTIFICATE-----";
+
+	var i = 0;
+	var nCount = 0;
+	var strPEMCert = "";
+	for ( i = 0; i < buf.length - pemHeader.length - pemTrailer.length; i++ )
+	{
+		strPEMCert += buf.charAt( i + pemHeader.length );
+		nCount = nCount + 1;
+		if ( nCount == 64 )
+		{
+			strPEMCert += '\n';
+			nCount = 0;
+		}
+	}
+
+	strPEMCert = strPEMCert;
+	
+	return strPEMCert;
+}
+
+-->
+</SCRIPT>
+</HEAD>
+<BODY>
+<P>
+<script language="javascript" src="../../TSToolkitObject.js"></script>	
+
+<form name="myform">
+
+<table border="10" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="center"><font color="#FFFFFF">== 인증서 신원 확인 ==</font></td></tr>
+</table>
+<table border="10" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="left"><font color="#FFFFFF">사용자가 입력하는 신원확인 정보와 인증서의 신원확인 정보가 일치하는지를 확인합니다.<br> <br>
+  신원확인 절차는 다음과 같습니다.<br>
+1. 신원을 확인할 인증서 선택.<br>
+2. 인증서 암호 입력.<br>
+3. 사업자번호 입력.<br>
+4. 인증서에 들어있는 신원확인 정보와 입력한 사업자번호의 일치여부 확인.<br><br>
+사용자가 제출한 신원식별번호(주민등록번호, 사업자 등록 번호)와 
+사용자의 개인키에서 추출한 랜덤값을 통하여 계산된 식별번호와 
+인증서에 포함된 식별번호를 비교 함으로써 사용자의 신원확인을 할 수 있다.
+  
+  </font></td></tr>
+</table>
+
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== 신원확인할 인증서의 신원확인 정보를 입력하세요 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="center">
+      <b>사업자(주민등록)번호 : <input type="text" name="ssn" size="13"> '-' 없이 입력하세요.
+    </td>
+  </tr>
+  <tr>
+    <td align="left">
+      <INPUT TYPE="button" name="checkIDN" value="인증서 신원확인" style="width:150" onClick="CheckIDN(myform);">
+    </td>
+  </tr>
+  <tr>
+    <td align="left">
+      <INPUT TYPE="button" name="checkIDN" value="인증서 신원확인_2" style="width:150" onClick="CheckIDN2(myform);">
+    </td>
+  </tr>
+  <tr>
+    <td align="right">
+      <INPUT TYPE="reset" name="Clear" Value="화면 지우기" style="width:150">
+    </td>
+  </tr>
+</table>
+</form>
+</BODY>
+</HTML>

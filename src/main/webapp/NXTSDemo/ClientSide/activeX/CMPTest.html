@@ -1,0 +1,246 @@
+﻿<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<TITLE></TITLE>
+<link rel="stylesheet" href="../../tradesign2.css" type="text/css">
+<SCRIPT language=javascript src="../../TSToolkitConfig.js"></script>
+<SCRIPT language=javascript>
+<!--
+
+function Issue2(form)
+{
+	var nRet;
+	
+	nRet = TSToolkit.InitCertIssue(CA_URL, CA_CERT_URL, CA_TYPE_TRADESIGN, COMMON_CERT_POLICIES);
+	if (nRet > 0) {
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+	var storageType = "HARD_DISK"
+	nRet = TSToolkit.SetIssueConfig("FALSE", "FALSE", storageType, "00033", "0000000033", "qwert1234!");
+	if (nRet > 0) {
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	if (storageType == "HARD_DISK") {
+		var removableDisk = "C:/";
+		nRet = TSToolkit.SetRemovableDiskInfo(removableDisk);
+		if (nRet > 0) {
+			alert(nRet + " : " + TSToolkit.GetErrorMessage());
+			return false;
+		}
+	}
+	
+	nRet = TSToolkit.IssueCert();
+	if (nRet > 0) {
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	var outCertDN, outCertPath, outCertMedia, outTokenPIN, outTokenDriver;
+    outCertDN = TSToolkit.GetCertDN();
+    outCertMedia = TSToolkit.GetCertMedia();
+    outCertPath = TSToolkit.GetCertPath();
+    outTokenPIN = TSToolkit.GetTokenPIN();
+    outTokenDriver = TSToolkit.GetTokenDriver();
+    alert("CertDN : " + outCertDN + "\n\nCertMedia : "+ outCertMedia + "\n\nCertPath : "+ outCertPath + "\n\nTokenPIN : "+ outTokenPIN + "\n\ntokenDriver : "+ outTokenDriver);
+    	
+	alert("Sucess!!!");
+	return true;
+}
+
+function Issue(form)
+{
+	var nRet;
+	
+	nRet = TSToolkit.InitCertIssue(CA_URL, CA_CERT_URL, CA_TYPE_TRADESIGN, COMMON_CERT_POLICIES);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+	nRet = TSToolkit.IssueCert();
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	var outCertDN, outCertPath, outCertMedia, outTokenPIN, outTokenDriver;
+    outCertDN = TSToolkit.GetCertDN();
+    outCertMedia = TSToolkit.GetCertMedia();
+    outCertPath = TSToolkit.GetCertPath();
+    outTokenPIN = TSToolkit.GetTokenPIN();
+    outTokenDriver = TSToolkit.GetTokenDriver();
+    alert("CertDN : " + outCertDN + "\n\nCertMedia : "+ outCertMedia + "\n\nCertPath : "+ outCertPath + "\n\nTokenPIN : "+ outTokenPIN + "\n\ntokenDriver : "+ outTokenDriver);
+    	
+	alert("Sucess!!!");
+	return true;
+}
+
+function Update(form)
+{
+	var nRet;
+	
+	nRet = TSToolkit.InitCertIssue(CA_URL, CA_CERT_URL, CA_TYPE_TRADESIGN, COMMON_CERT_POLICIES);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+	nRet = TSToolkit.UpdateCert();
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+	var outCertDN, outCertPath, outCertMedia, outTokenPIN, outTokenDriver;
+    outCertDN = TSToolkit.GetCertDN();
+    outCertMedia = TSToolkit.GetCertMedia();
+    outCertPath = TSToolkit.GetCertPath();
+    outTokenPIN = TSToolkit.GetTokenPIN();
+    outTokenDriver = TSToolkit.GetTokenDriver();
+    alert("CertDN : " + outCertDN + "\n\nCertMedia : "+ outCertMedia + "\n\nCertPath : "+ outCertPath + "\n\nTokenPIN : "+ outTokenPIN + "\n\ntokenDriver : "+ outTokenDriver);
+	
+	alert("Sucess!!!");
+	return true;
+}
+
+function Update2(form)
+{
+	var nRet;
+	
+	nRet = TSToolkit.InitCertIssue(CA_URL, CA_CERT_URL, CA_TYPE_TRADESIGN, COMMON_CERT_POLICIES);
+	if (nRet > 0) {
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+	var storageType = "REMOVABLE"
+	nRet = TSToolkit.SetRenewalConfig("FALSE", "FALSE", storageType, "cn=발급test001_0000068733,ou=TEST,ou=AccreditedCA,o=TradeSign,c=KR", "qwert1234!");
+	if (nRet > 0) {
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	if (storageType == "REMOVABLE") {
+		var removableDisk = "D:/";
+		nRet = TSToolkit.SetRemovableDiskInfo(removableDisk);
+		if (nRet > 0) {
+			alert(nRet + " : " + TSToolkit.GetErrorMessage());
+			return false;
+		}
+	}
+	
+	nRet = TSToolkit.UpdateCert();
+	if (nRet > 0) {
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	var outCertDN, outCertPath, outCertMedia, outTokenPIN, outTokenDriver;
+    outCertDN = TSToolkit.GetCertDN();
+    outCertMedia = TSToolkit.GetCertMedia();
+    outCertPath = TSToolkit.GetCertPath();
+    outTokenPIN = TSToolkit.GetTokenPIN();
+    outTokenDriver = TSToolkit.GetTokenDriver();
+    alert("CertDN : " + outCertDN + "\n\nCertMedia : "+ outCertMedia + "\n\nCertPath : "+ outCertPath + "\n\nTokenPIN : "+ outTokenPIN + "\n\ntokenDriver : "+ outTokenDriver);
+    	
+	alert("Sucess!!!");
+	return true;
+}
+
+function Revoke(form)
+{
+	var nRet;
+	
+	nRet = TSToolkit.InitCertIssue(CA_URL, CA_CERT_URL, CA_TYPE_TRADESIGN, COMMON_CERT_POLICIES);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+	nRet = TSToolkit.RevokeCert(CAIP, CAPort, CA_TYPE_ALL_INT, POLICIES);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	alert("Sucess!!!");
+	return true;
+}
+
+function Hold(form)
+{
+	var nRet;
+	
+	nRet = TSToolkit.InitCertIssue(CA_URL, CA_CERT_URL, CA_TYPE_TRADESIGN, COMMON_CERT_POLICIES);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+
+	nRet = TSToolkit.HoldCert(CAIP, CAPort, CA_TYPE_ALL_INT, POLICIES);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	alert("Sucess!!!");
+	return true;
+}
+-->
+</SCRIPT>
+</HEAD>
+<BODY>
+<P>
+<script language="javascript" src="../../TSToolkitObject.js"></script>	
+</P>
+
+<form name="myform">
+
+<table border="10" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="center"><font color="#FFFFFF">== 인증서 발급/갱신/폐지==</font></td></tr>
+</table>
+<table border="10" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="left"><font color="#FFFFFF">인증서 신규/재발급, 갱신발급, 폐지/효력정지를 수행합니다.</font></td></tr>
+</table>
+
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <INPUT TYPE="button" name="button1" Value="발급" style="width:150" onClick="Issue(myform);" >
+    </td>
+    <td align="left">
+      <INPUT TYPE="button" name="button1" Value="갱신" style="width:150" onClick="Update(myform);" >
+    </td>
+    <td align="left">
+      <INPUT TYPE="button" name="button1" Value="효력정지" style="width:150" onClick="Hold(myform);" >
+    </td>
+    <td align="left">
+      <INPUT TYPE="button" name="button1" Value="폐지" style="width:150" onClick="Revoke(myform);" >
+    </td>
+  </tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <INPUT TYPE="button" name="button1" Value="UI없는 발급" style="width:150" onClick="Issue2(myform);" >
+    </td>
+    <td align="left">
+      <INPUT TYPE="button" name="button1" Value="UI없는 갱신" style="width:150" onClick="Update2(myform);" >
+    </td>
+  </tr>
+</table>
+</form>
+</BODY>
+</HTML>

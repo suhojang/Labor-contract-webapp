@@ -1,0 +1,172 @@
+﻿<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<TITLE></TITLE>
+<link rel="stylesheet" href="../../tradesign2.css" type="text/css">
+<SCRIPT language=javascript src="../../TSToolkitConfig.js"></script>
+<SCRIPT language=javascript>
+<!--
+function OCSPCheck(form)
+{
+	var nRet, isFile;
+	var cert, certType, isSign, ocspVersion, hashAlgo;
+	
+	
+	// 검증할 인증서 및 형태 설정.
+	if (form.isFile.checked == true)
+	{
+		cert = form.certPath.value;
+		certType = DATA_TYPE_FILE;
+	}
+	else
+	{
+		cert = form.cert.value;
+		certType = DATA_TYPE_PEM;
+	}
+	
+	// 서명여부 설정
+	if (form.isSign.checked == true)
+	{
+		isSign = true;
+	}
+	else
+	{
+		isSign = false;
+	}
+	
+	// 모든 Condition 설정.
+	nRet = TSToolkit.SetConfig("test", CA_LDAP_INFO, CTL_INFO, POLICIES, 
+							INC_CERT_SIGN, INC_SIGN_TIME_SIGN, INC_CRL_SIGN, INC_CONTENT_SIGN,
+							USING_CRL_CHECK, USING_ARL_CHECK);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	// 서명할 경우에만 서명할 인증서 선택.
+	if (isSign == true)
+	{
+		// 인증서 로딩시 KM 인증서 검증 옵션 켜기
+		TSToolkit.SetEachConfig("LOAD_CERT_KM", "TRUE");
+		
+		// 사용자가 자신의 인증서를 선택. 
+		nRet = TSToolkit.SelectCertificate(STORAGE_TYPE, 0, "");
+		if (nRet > 0)
+		{
+			alert(nRet + " : " + TSToolkit.GetErrorMessage());
+			return false;
+		}
+	}
+	
+	// OCSP 버전 설정.
+	ocspversion = 1;
+	// Hash  알고리즘 설정.
+	hashAlgo = HASH_ID_SHA1;
+	
+	// - 함수 설명
+	// certType : INT or SHORT : 
+	//			DATA_TYPE_PEM(0)  : cert 가 PEM 형태의 인증서임을 표시. 
+	//			DATA_TYPE_FILE(1) : cert 가 Binary(DER) 형태의 인증서 파일의 절대 경로임을 표시.
+	// cert : BSTR : 검증할 인증서 (PEM 형태의 인증서 내지는 Binary(DER) 형태의 인증서 파일의 절대 경로
+	// ocspversion : INT or SHORT : ocsp 버전 설정. -상단에서 1로 고정.
+	// hashAlgo : INT or SHOT : HASH 알고리즘.
+	// isSign : BSTR : 서명 여부 : "true" - 서명함, "false" - 서명안함.
+	//
+	// - 내부에서 해야할 일.
+	// - certType 에 따라 인증서 파일을 읽던가, PEM 데이터 처리를 한다. (LoadCertificate 함수 참고)
+	// - isSign 에 따라 서명을 진행한다. (SignData 함수 참고, 인증서가 설정되었는지 확인이 선행되어야 함)
+	// - OCSP 메시지를 생성, 전송, 수신, 검증을 진행한다.
+	// - OCSP 에서 온 메시지(폐지여부)를 하단의 TSToolkit.OutData 에서 꺼낼수 있도록 설정한다.(VerifySignData 함수 참고)
+	// - ResponseMessage 는 임의의 위치에 저장토록한다. (Debugging 용, 추후 삭제할 부분 표시)
+	//
+	
+	nRet = TSToolkit.CertificateValidationByOCSP(certType, cert, ocspversion, hashAlgo, isSign);
+	if (nRet > 0)
+	{
+		alert(nRet + " : " + TSToolkit.GetErrorMessage());
+		return false;
+	}
+	
+	form.data1.value = TSToolkit.OutData;
+	
+	alert("Sucess!!!");
+}
+
+
+-->
+</SCRIPT>
+</HEAD>
+<BODY>
+<P>
+<script language="javascript" src="../../TSToolkitObject.js"></script>	
+</P>
+
+<form name="myform">
+
+<table border="10" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="center"><font color="#FFFFFF">== OCSP에 의한 인증서 상태 확인 ==</font></td></tr>
+</table>
+<table border="10" width="600" cellpadding="10" cellspacing="0" bordercolor="white" bgcolor="0x98FB98">
+  <tr><td align="left"><font color="#FFFFFF">OCSP는 전자 서명 인증서 폐지 목록의 갱신 주기성 문제를 해결하기 위해 폐지/효력 정지 상태를 파악하여 
+사용자가 실시간으로 인증서를 검증할 수 있는 프로토콜입니다.<br><br> 
+예를 들어, 고가의 증권 정보나 고액의 현금 거래 등 데이터 트랜잭션의 중요성이 매우 높은 경우 실시간으로 인증서 유효성 검증이 필요합니다. </font></td></tr>
+</table>
+
+
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== OCSP로 검증할 PEM 형태의 인증서를 입력하세요 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <textarea name="cert" rows="6" cols="80"></textarea>
+    </td>
+  </tr>
+</table>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== OCSP로 검증할 인증서 파일의 절대경로를 입력하세요 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <input type="file" name="certPath" size="65">
+    </td>
+  </tr>
+</table>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFFF">== OCSP 검증 조건을 선택하세요 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <INPUT TYPE="checkbox" name="isFile" checked>파일 OR PEM 인증서 검증 여부(Check-파일, UnCheck-PEM)<br>
+      <INPUT TYPE="checkbox" name="isSign" checked>송신자 서명 여부(Check-서명함, UnCheck-서명안함)
+    </td>
+  </tr>
+  <tr>
+    <td align="left">
+      <INPUT TYPE="button" name="button1" Value="검증하기" style="width:150" onClick="OCSPCheck(myform);" >
+    </td>
+  </tr>
+</table>
+<br>
+<table border="2" width="600" cellpadding="3" cellspacing="0" bordercolor="#97A9BB" bgcolor="#A7B9CC">
+  <tr><td align="center"><font color="#FFFFF">== OCSP 에서 전달된 데이타 ==</font></td></tr>
+</table>
+<table border="2" width="600" cellpadding="5" cellspacing="0" bordercolor="#E0E0E0" bgcolor="#F0F0F0">
+  <tr>
+    <td align="left">
+      <textarea name="data1" rows="6" cols="80"></textarea>
+    </td>
+  </tr>
+  <tr>
+    <td align="right">
+      <INPUT TYPE="reset" name="Clear" Value="화면 지우기" style="width:150">
+    </td>
+  </tr>
+</table>
+
+</form>
+</BODY>
+</HTML>
