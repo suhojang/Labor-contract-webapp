@@ -4,5 +4,5 @@
 > 환경에 맞추어 config 파일 수정하셔서 사용하시면 됩니다.
 
 ```
-git clone 
+git clone https://github.com/suhojang/Labor-contract-webapp.git
 ```
